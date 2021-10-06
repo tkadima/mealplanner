@@ -1,22 +1,20 @@
 import { Table } from 'semantic-ui-react'
 import Meal from './Meal'
 
-const Calendar = ({data, daysOfWeek, meals, handleSelectMeal, summary}) => {
+const Calendar = ({data, daysOfWeek, meals, handleSelectMeal}) => {
     const headerRow = daysOfWeek.map((day, i) => 
         <Table.HeaderCell key={i}>{day}</Table.HeaderCell>
     )
-    const getTotal = (groupName, daySummary) => {
-        return daySummary && daySummary[groupName] ? daySummary[groupName] : 0
-    }
+  
+    
     const totalRow = daysOfWeek.map((day, i) => {
-    //    let daySummary = summary[day]
-    //     return <Table.Cell key={i}>
-    //         <p color="blue">{getTotal('Dairy', daySummary)}/2 cups of dairy</p>
-    //         <p color="red">{getTotal('Fruit', daySummary)}/1.5 cups of fruit</p>
-    //         <p color="orange">{getTotal('Grain', daySummary)}/6 ounces of grain</p>
-    //         <p color="purple">{getTotal('Protein', daySummary)}/5 ounces of protein</p>
-    //         <p color="green">{getTotal('Vegetable', daySummary)}/2.5 cups of vegetables</p>
-    //     </Table.Cell>
+        return <Table.Cell key={i}>
+            <p color="blue">0/2 cups of calories</p>
+            <p color="red">0/1.5 cups of carbs</p>
+            <p color="orange">0/6 ounces of fiber</p>
+            <p color="purple">0/5 ounces of protein</p>
+            <p color="green">0/2.5 cups of iron</p>
+        </Table.Cell>
     })
    
     return (
