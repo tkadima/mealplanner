@@ -5,15 +5,10 @@ const Calendar = ({data, daysOfWeek, meals, handleSelectMeal}) => {
     const headerRow = daysOfWeek.map((day, i) => 
         <Table.HeaderCell key={i}>{day}</Table.HeaderCell>
     )
-  
     
     const totalRow = daysOfWeek.map((day, i) => {
         return <Table.Cell key={i}>
-            <p color="blue">0/2 cups of calories</p>
-            <p color="red">0/1.5 cups of carbs</p>
-            <p color="orange">0/6 ounces of fiber</p>
-            <p color="purple">0/5 ounces of protein</p>
-            <p color="green">0/2.5 cups of iron</p>
+           Summary for {day}
         </Table.Cell>
     })
    
@@ -43,14 +38,13 @@ const Calendar = ({data, daysOfWeek, meals, handleSelectMeal}) => {
                         return row;
                     })
                 }
+                    <Table.Row>
+                        <Table.Cell>Totals</Table.Cell>
+                        {totalRow}
+                    </Table.Row>
                 </Table.Body>
-                <Table.Row>
-                    <Table.Cell>Totals</Table.Cell>
-                    {totalRow}
-                </Table.Row>
+                    
             </Table>
-            
-           
     )
 }
 export default Calendar
