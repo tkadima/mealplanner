@@ -1,20 +1,24 @@
 import { Table } from 'semantic-ui-react'
-import _ from 'lodash'
 import Meal from './Meal'
 
-const Calendar = ({data, daysOfWeek, meals, handleSelectMeal, analysis}) => {
+const Calendar = ({data, daysOfWeek, meals, handleSelectMeal, summary}) => {
     const headerRow = daysOfWeek.map((day, i) => 
         <Table.HeaderCell key={i}>{day}</Table.HeaderCell>
     )
-    
-    const totalRow = daysOfWeek.map((day, i) => {
-        return <Table.Cell key={i}>
-           Summary for {day} <br/>
-           {_.forOwn(analysis[day], nutrient => {
-               console.log(nutrient)
-           }) } 
-        </Table.Cell>
-    })
+    // const getTotal = (groupName, daySummary) => {
+    //     console.log(groupName, daySummary)
+    //     return daySummary && daySummary[groupName] ? daySummary[groupName] : 0
+    // }
+    //const totalRow = daysOfWeek.map((day, i) => {
+       //let daySummary = summary[day]
+        // return <Table.Cell key={i}>
+        //     <p color="blue">{getTotal('Dairy', daySummary)}/2 cups of protein</p>
+        //     <p color="red">{getTotal('Fruit', daySummary)}/1.5 cups of carbs</p>
+        //     <p color="orange">{getTotal('Grain', daySummary)}/6 ounces of grain</p>
+        //     <p color="purple">{getTotal('Protein', daySummary)}/5 ounces of protein</p>
+        //     <p color="green">{getTotal('Vegetable', daySummary)}/2.5 cups of vegetables</p>
+        // </Table.Cell>
+   // })
    
     return (
             <Table celled className="Calendar">
@@ -42,13 +46,13 @@ const Calendar = ({data, daysOfWeek, meals, handleSelectMeal, analysis}) => {
                         return row;
                     })
                 }
-                    <Table.Row>
-                        <Table.Cell>Totals</Table.Cell>
-                        {totalRow}
-                    </Table.Row>
                 </Table.Body>
-                    
+                <Table.Row>
+                    <Table.Cell>Totals</Table.Cell>
+                </Table.Row>
             </Table>
+            
+           
     )
 }
 export default Calendar
