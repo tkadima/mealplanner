@@ -1,14 +1,18 @@
 import { Table } from 'semantic-ui-react'
+import _ from 'lodash'
 import Meal from './Meal'
 
-const Calendar = ({data, daysOfWeek, meals, handleSelectMeal}) => {
+const Calendar = ({data, daysOfWeek, meals, handleSelectMeal, analysis}) => {
     const headerRow = daysOfWeek.map((day, i) => 
         <Table.HeaderCell key={i}>{day}</Table.HeaderCell>
     )
     
     const totalRow = daysOfWeek.map((day, i) => {
         return <Table.Cell key={i}>
-           Summary for {day}
+           Summary for {day} <br/>
+           {_.forOwn(analysis[day], nutrient => {
+               console.log(nutrient)
+           }) } 
         </Table.Cell>
     })
    

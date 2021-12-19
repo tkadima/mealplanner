@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import { useState } from "react";
 import _ from 'lodash'
 import { Header } from 'semantic-ui-react'
 
@@ -22,35 +22,18 @@ const Planner = () => {
         return mealData
     } 
 
+
     const [data, setData] = useState(() => initializeData());
     const [showModal, setShowModal] = useState(false)
     const [selectedMeal, setSelectedMeal] = useState('')
     const [selectedDay, setSelectedDay] = useState('')
-    const [selectedRecipe, setSelectedRecipe] = useState({})
+    const [selectedRecipe, setSelectedRecipe] = useState(null)
     const [op, setOp] = useState('')
     const [errors, setErrors] = useState({})
-    //const [dayAnalysis, setDayAnalysis] = useState(null) 
-
+   
     const addRecipe = (title, ingredients) => {
-        let newData = {...data}
-        newData[selectedDay][selectedMeal].push({title, ingredients})
-        setData(newData) 
-
-        let newRecipe = {...selectedRecipe }
-        newRecipe.title = title
-        newRecipe.ingredients = ingredients
-        setSelectedRecipe(newRecipe)
-        
-       
-
-        /**
-         * Add a summary to meal so that the data looks like :
-         *  {...Monday: {Breakfast: {title: scrambled, eggs, ingredients: [2 eggs, butter], analysis: {calories: 200...}}}}
-         * create new state called nutrientsPerDay {Day: { Calories: 100, Protein: 1mg, ...}}
-         * pass ingredients to api, input response to nutrientsPerDay
-         * display nutrients per day on footer of table 
-         */
-
+        data[selectedDay][selectedMeal].push({title, ingredients})
+        setData(data)
     }
 
     const editRecipe = (title, ingredients) => {
@@ -110,6 +93,7 @@ const Planner = () => {
             }
             
             setOp('')
+            setSelectedRecipe(null)
         }
     }
     
@@ -131,44 +115,6 @@ const Planner = () => {
         })
         return dict
     }
-
-      useEffect( () => {
-        if (selectedRecipe && selectedRecipe.title && selectedRecipe.ingredients) {
-            const APIKEY = process.env.REACT_APP_NUTRITION_API_KEY
-            const APIID = process.env.REACT_APP_NUTRITION_API_ID
-            let bodyObj =  {
-                'title': selectedRecipe.title,
-                'ingr': selectedRecipe.ingredients.split('\n'),
-                'mealType': selectedMeal,
-            }
-
-            fetch(`https://api.edamam.com/api/nutrition-details?app_id=${APIID}&app_key=${APIKEY}`, {
-                'method': 'POST',
-                'headers': {
-                    'accept': 'text/json',
-                    'content-Type': 'application/json'
-                },
-                'body': JSON.stringify(bodyObj)
-            })
-            .then(response => {
-                return response.json()
-            })
-            .then(responseData => {
-                let newData = {...data}
-                let calories = responseData['calories']
-                let recipe = newData[selectedDay][selectedMeal].find(r => r.title === selectedRecipe.title) 
-
-                recipe['analysis'] = {calories: calories}
-                setData(newData)
-                // todo: get the sum all analysis and add 
-            
-                })
-            .catch(err => {
-                console.error(err);
-            })
-        }
-      }, [selectedRecipe])
-
 
     let recipes = getRecipes()
     return (
