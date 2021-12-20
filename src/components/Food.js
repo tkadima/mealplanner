@@ -1,10 +1,10 @@
 import { Card, Icon, Image, Input } from 'semantic-ui-react'
 import { useState } from 'react'; 
 
-const Food = () => {
-    const [name, setName] = useState('Sample Food Name')
-    const [description, setDescription] = useState('Rich in Vitamin C')
-    const [isEditting, setIsEditting] = useState(false)
+const Food = (props) => {
+    const [name, setName] = useState(props.name)
+    const [description, setDescription] = useState(props.description)
+    const [isEdit, setIsEdit] = useState(props.isNew)
     const [image, setImage] = useState(null)
 
     const handleEditting = (e) => {
@@ -21,16 +21,18 @@ const Food = () => {
         <div>
             <Card>
                 <Image src={imageUrl} ui={false} />
-                <Input type='file' hidden={!isEditting} onChange={(e) => setImage(e.target.files[0])}/>
+                <Input type='file' 
+                    className='imageFile' 
+                    hidden={!isEdit && !props.isNew} 
+                    onChange={(e) => setImage(e.target.files[0])}/>
             <Card.Content>
                 {
-                    isEditting ? <Input name='name' value={name} onChange={e => handleEditting(e)}/> 
-                    : 
+                    isEdit && props.isNew ? <Input name='name' value={name} onChange={e => handleEditting(e)}/> :
                     <Card.Header className='food-card-header'>{name}</Card.Header>
                 }
                 <Card.Description>
                     {
-                        isEditting ? 
+                        isEdit ? 
                         <Input name='description' value={description} onChange={e => handleEditting(e)}/>
                         : 
                         <Card.Header className= 'food-card-description'>{description}</Card.Header>
@@ -38,11 +40,20 @@ const Food = () => {
                 </Card.Description>
             </Card.Content>
             <Card.Content extra>
-                <Icon name='pencil' onClick={() => setIsEditting(!isEditting)}></Icon>
-                {isEditting ? <Icon name='save' onClick={() => setIsEditting(false)}></Icon> : <Icon name="trash"></Icon>}
+                {
+                    isEdit ? 
+                    <Icon name='save' onClick={() => {
+                        setIsEdit(false)
+                        props.onSaveChanges(name, description, props.isNew)
+                    }}/> : 
+                    <div>
+                        <Icon name='pencil' onClick={() => setIsEdit(true)}></Icon>
+                        <Icon name="trash"></Icon>
+                    </div>
+                }
             </Card.Content>
             </Card>
         </div>
     )
 }
-export default Food
+export default Food 

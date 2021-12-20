@@ -5,6 +5,7 @@ import Planner from './Planner'
 import Home from './Home'
 import Layout from './Layout'
 import './App.scss'
+import Fridge from './Fridge';
 
 function App() {
   return (
@@ -16,6 +17,9 @@ function App() {
             </Route>
             <Route exact path="/planner">
               <Planner /> 
+            </Route>
+            <Route exact path="/fridge">
+              <Fridge></Fridge>
             </Route>
         </Router>
       </div>

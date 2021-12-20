@@ -1,5 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
+
 import Food from '../components/Food'
 
 test('editting food should change display', () => {
@@ -58,5 +59,29 @@ test('editting food changes text values', () => {
 
     expect(wrapper.find('.food-card-header').render().text()).toEqual('Apple')
     expect(wrapper.find('.food-card-description').render().text()).toEqual('One a day keeps the doctor away')
+})
+
+test('uploading image should save image', () => {
+    let wrapper = shallow(<Food></Food>)
+    let editBtn = wrapper.find({name : 'pencil'})
+    let image = wrapper.find('Image')
+
+    expect(image.prop('src')).toEqual("https://react.semantic-ui.com/images/wireframe/image.png")
+
+    editBtn.simulate('click')
+
+    let fileInput = wrapper.find({type: 'file'})
+    global.URL.createObjectURL = jest.fn();
+
+
+    fileInput.simulate('change', {
+        target: {
+            files: ['file.jpg']
+        }
+    })
+    let saveBtn = wrapper.find({name: 'save'})
+    saveBtn.simulate('click')
+
+    console.log(wrapper.debug())
 
 })
