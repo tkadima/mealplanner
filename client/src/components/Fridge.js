@@ -3,6 +3,7 @@ import { Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 
 import Food from './Food'
+import * as data from './food.json'
 
 const Fridge = () => {
   const [items, setItems] = useState([])
@@ -12,7 +13,6 @@ const Fridge = () => {
     setCreating(true)
   }
   const handleSaveChanges = (name, description, isNew) => {
-    console.log(`submitting ${name}, ${description}, isNew: ${isNew}`)
     if (isNew) {
       console.log('adding', {name, description})
       let newItems = items.concat({name, description})
@@ -20,11 +20,9 @@ const Fridge = () => {
       setCreating(false)
     }
     else {
-      console.log('edit item', name, description)
       let index = _.findIndex(items, (item) => {
         return item.name === name
       })
-      console.log( `Found on index ${index} = ${items[index]}`)
       _.set(items, `items[${index}].description`, description)
       setItems(items)
     }
@@ -35,6 +33,7 @@ const Fridge = () => {
       <h1 className="header">
         Welcome to the Fridge
       </h1>
+      <p>{JSON.stringify(data)}</p>
       {
         items.map((item, i) => {
           return <Food 

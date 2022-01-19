@@ -1,6 +1,7 @@
 import { Card, Icon, Image, Input } from 'semantic-ui-react'
 import { useState } from 'react'; 
 
+
 const Food = (props) => {
     const [name, setName] = useState(props.name)
     const [description, setDescription] = useState(props.description)
