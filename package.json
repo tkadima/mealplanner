@@ -4,12 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/index.js"
+    "start": "node server/index.js",
+    "build": "cd client && npm install && npm run build"
   },
   "keywords": [],
-  "author": "",
+  "author": "Tabitha Kadima",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "sass": "^1.49.0"
+  },
+  "engines": {
+    "node": "16.13.1"
   }
 }
