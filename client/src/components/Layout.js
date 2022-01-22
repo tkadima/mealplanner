@@ -10,6 +10,7 @@ const Layout = ({children}) => {
                     <Menu.Item header>Meal Planner </Menu.Item>
                     <Menu.Item as='a' href="\">Home</Menu.Item>
                     <Menu.Item as='a' href="\planner">Calendar</Menu.Item>
+                    <Menu.Item as='a' href="\ingredients">View Your Fridge</Menu.Item>
                 </Container>
             </Menu>
             

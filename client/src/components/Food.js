@@ -21,14 +21,16 @@ const Food = (props) => {
     return (
         <div>
             <Card>
-                <Image src={imageUrl} ui={false} />
+                <Image size='medium' src={imageUrl}  wrapped ui={false} />
                 <Input type='file' 
                     className='imageFile' 
                     hidden={!isEdit && !props.isNew} 
                     onChange={(e) => setImage(e.target.files[0])}/>
             <Card.Content>
                 {
-                    isEdit && props.isNew ? <Input name='name' value={name} onChange={e => handleEditting(e)}/> :
+                    isEdit && props.isNew ? 
+                    <Input name='name' value={name} onChange={e => handleEditting(e)}/> 
+                    :
                     <Card.Header className='food-card-header'>{name}</Card.Header>
                 }
                 <Card.Description>

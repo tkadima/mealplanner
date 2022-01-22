@@ -1,30 +1,49 @@
-import React, { useState } from 'react'
-import { Icon } from 'semantic-ui-react'
+import React, { useState, useEffect } from 'react'
+import { Card, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
 
 import Food from './Food'
-import * as data from './food.json'
 
 const Fridge = () => {
-  const [items, setItems] = useState([])
+  const [data, setData] = useState([])
   const [creating, setCreating] = useState(false)
+
+
+  const getFood = () => {
+    fetch('food.json', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((foodList) => {
+      setData(foodList)
+    })
+  }
+
+  useEffect(() => {
+    getFood()
+  }, [])
 
   const handleAddItem = () => {
     setCreating(true)
   }
+
   const handleSaveChanges = (name, description, isNew) => {
     if (isNew) {
-      console.log('adding', {name, description})
-      let newItems = items.concat({name, description})
-      setItems(newItems)
+      let newItems = data.concat({name, description})
+      setData(newItems)
       setCreating(false)
     }
     else {
-      let index = _.findIndex(items, (item) => {
+      let index = _.findIndex(data, (item) => {
         return item.name === name
       })
-      _.set(items, `items[${index}].description`, description)
-      setItems(items)
+      _.set(data, `items[${index}].description`, description)
+      setData(data)
     }
   }
 
@@ -33,17 +52,20 @@ const Fridge = () => {
       <h1 className="header">
         Welcome to the Fridge
       </h1>
-      <p>{JSON.stringify(data)}</p>
+      <Card.Group itemsPerRow={3}>
       {
-        items.map((item, i) => {
-          return <Food 
-                    key={i} 
-                    name={item.name} 
-                    description={item.description} 
-                    isNew={false}
-                    onSaveChanges={handleSaveChanges}/>
+        data.map((item, i) => {
+          return 
+            <Food 
+              key={i} 
+              name={item.name} 
+              description={item.description} 
+              isNew={false}
+              onSaveChanges={handleSaveChanges}/>
+            
         })
       }
+      </Card.Group>
       <Icon color="teal" name="plus circle" size='large' onClick={() => handleAddItem()}></Icon>
       {
         creating && 
