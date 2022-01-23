@@ -43,4 +43,30 @@
   padding: 10px 0 10px 15px;
 }
 
+.fridge {
+  .fridge__plus-button-container {
+    height: 50px;
+  }
+}
 
+.food {
+  height: 360px; 
+  position: relative;
+  .food__image {
+
+    &--upload {
+      width: 100%;
+      position: absolute;
+      top: 62%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  .food__header {
+    width: 100%; 
+    height: 10px; 
+  }
+  // .food__actions {
+  //   height: 20px;
+  // }
+}

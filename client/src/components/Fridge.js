@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Card, Icon } from 'semantic-ui-react'
 import _ from 'lodash'
+import './App.scss'
 
 import Food from './Food'
 
@@ -25,6 +26,7 @@ const Fridge = () => {
   }
 
   useEffect(() => {
+    console.log('use effect?')
     getFood()
   }, [])
 
@@ -48,15 +50,27 @@ const Fridge = () => {
   }
 
   return(
-    <div className="container">
-      <h1 className="header">
+    <div className='fridge fridge__container container'>
+      <h1 className='fridge__header'>
         Welcome to the Fridge
       </h1>
-      <Card.Group itemsPerRow={3}>
+      <div className='fridge__plus-button-container'>
+        <Icon 
+          className='fridge__plus-button' 
+          color='teal' 
+          name='plus circle' 
+          size='large' 
+          onClick={() => handleAddItem()}
+        />
+      </div>
       {
-        data.map((item, i) => {
-          return 
-            <Food 
+        creating && 
+        <Food name='' description='' onSaveChanges={handleSaveChanges} isNew/> 
+      }
+      <Card.Group itemsPerRow={4}>
+      {
+        data.map((item, i) => { 
+            return <Food 
               key={i} 
               name={item.name} 
               description={item.description} 
@@ -66,11 +80,6 @@ const Fridge = () => {
         })
       }
       </Card.Group>
-      <Icon color="teal" name="plus circle" size='large' onClick={() => handleAddItem()}></Icon>
-      {
-        creating && 
-        <Food name='' description='' onSaveChanges={handleSaveChanges} isNew={true}/> 
-      }
     </div>
   )
 }
