@@ -5,6 +5,7 @@ import Planner from './Planner'
 import Home from './Home'
 import Layout from './Layout'
 import Fridge from './Fridge';
+import FoodForm from './CreateFood'
 import './App.scss'
 
 function App() {
@@ -19,8 +20,11 @@ function App() {
             <Route exact path="/planner">
               <Planner /> 
             </Route>
-            <Route exact path="/ingredients">
+            <Route exact path="/fridge">
               <Fridge></Fridge>
+            </Route>
+            <Route path="/fridge/new">
+              <FoodForm />
             </Route>
         </Router>
       </div>
