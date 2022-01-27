@@ -3,7 +3,6 @@ const Layout = ({children}) => {
     return (
         <div className="layout">
           <Menu
-           inverted
             borderless
             fixed="top"
             className="layout-navbar">
@@ -15,7 +14,7 @@ const Layout = ({children}) => {
                 </Container>
             </Menu>
             
-            <div className="layout-content">
+            <div className="layout-content container">
                 {children}
             </div>
             
