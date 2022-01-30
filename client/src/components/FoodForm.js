@@ -3,20 +3,21 @@ import {  Form, Grid, Image, Input, Select, TextArea } from 'semantic-ui-react'
 
 const FoodForm = (props) => {
     const [image, setImage] = useState(null)
-    const [food, setFood] = useState({ name: '', description: '', servingSize: '', foodGroup:'', calories: 0 })
-
-    const { name, description, servingSize, foodGroup, calories } = food
+    const [food, setFood] = useState({ name: '', description: '', quantity : 0.0, unit: '', group: '', calories: 0})
 
     let imageUrl = image ? URL.createObjectURL(image) : '/images/default.png'
 
     const handleSubmit = (e) => {
+        fetch('http://localhost:3001/food/new', {
+            method: 'POST',
+            body: JSON.stringify(food)
+        }).then(res => {
+            return res.json()
+        })
         e.preventDefault()
-        const food = {
-            
-        }
     }
     return (
-        <Form className='food-form'>
+        <Form className='food-form' onSubmit={handleSubmit}>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column width={8}>

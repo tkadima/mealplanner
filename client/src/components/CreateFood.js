@@ -11,15 +11,12 @@ const CreateFood = () => {
         {key: 5, value: 'other', text: 'Other'}
     ]
     const unitOptions = [
-        {key: 0, value: 'sm', text: 'Small'},
-        {key: 1, value: 'md', text: 'Medium'},
-        {key: 2, value: 'lg', text: 'Large'},
-        {key: 3, value: 'cups', text: 'Cups'},
-        {key: 4, value: 'g', text: 'Grams'},
-        {key: 5, value: 'tbsp', text: 'Tablespoons'},
-        {key: 6, value: 'tsp', text: 'Teaspoons'},
-        {key: 7, value: 'oz', text: 'Ounces'},
-        {key: 8, value: 'lb', text: 'Pound'}
+        {key: 0, value: 'cups', text: 'Cups'},
+        {key: 1, value: 'g', text: 'Grams'},
+        {key: 2, value: 'tbsp', text: 'Tablespoons'},
+        {key: 3, value: 'tsp', text: 'Teaspoons'},
+        {key: 4, value: 'oz', text: 'Ounces'},
+        {key: 5, value: 'lb', text: 'Pound'}
 
     ]
 

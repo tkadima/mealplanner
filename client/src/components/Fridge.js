@@ -9,7 +9,7 @@ const Fridge = () => {
   const [data, setData] = useState([])
 
   const getFood = () => {
-    fetch('food.json', {
+    fetch('http://localhost:3001/api/food', {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -19,8 +19,12 @@ const Fridge = () => {
       return response.json()
     })
     .then((foodList) => {
+      console.log('printing nothing', foodList)
       setData(foodList)
     })
+    .catch(e => {
+      console.log(e)
+    }) 
   }
 
   useEffect(() => {
