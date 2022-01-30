@@ -35,7 +35,7 @@ app.get('/api/food/', (req, res) => {
     })
 })
 app.post('/api/food/new', (req, res) => {
-    console.log('request body', req.body)
+    console.log('server req', req)
     let data = { 
         name: req.body.name,
         description: req.body.description, 
@@ -53,6 +53,7 @@ app.post('/api/food/new', (req, res) => {
 })
 
 app.put('/api/food/', (req, res) => {
+    console.log('updating in server')
     const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageUrl = ? WHERE id = ?"
     db.query(
         query, 
@@ -62,7 +63,6 @@ app.put('/api/food/', (req, res) => {
                 console.log(err)
             }
             else {
-                console.log(result.affectedRows)
                 res.send(result)
             }
         }
@@ -70,6 +70,7 @@ app.put('/api/food/', (req, res) => {
 })
 
 app.delete('/api/food/:id', (req, res) => {
+    console.log('reach delete')
     db.query(
         'DELETE FROM food WHERE id = ?', 
         req.params.id, 

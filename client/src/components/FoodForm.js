@@ -1,42 +1,55 @@
 import React, { useState } from 'react'
 import { Button, Form, Grid, Image, Input, Select, TextArea } from 'semantic-ui-react'
 import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
 
 const FoodForm = (props) => {
+    const foodGroupOptions = [
+        {key: 0, value: 'dairy', text: 'Dairy'},
+        {key: 1, value: 'fruit', text: 'Fruit'},
+        {key: 2, value: 'grain', text: 'Grain'},
+        {key: 3, value: 'protein', text: 'Protein'},
+        {key: 4, value: 'vegetable', text: 'Vegetable'}, 
+        {key: 5, value: 'other', text: 'Other'}
+    ]
+    const unitOptions = [
+        {key: 0, value: 'cups', text: 'Cups'},
+        {key: 1, value: 'g', text: 'Grams'},
+        {key: 2, value: 'tbsp', text: 'Tablespoons'},
+        {key: 3, value: 'tsp', text: 'Teaspoons'},
+        {key: 4, value: 'oz', text: 'Ounces'},
+        {key: 5, value: 'lb', text: 'Pound'}
+    ]
     const [image, setImage] = useState(null)
 
-    const { register, handleSubmit } = useForm();
+    const { handleSubmit, setValue } = useForm();
 
     let imageUrl = image ? URL.createObjectURL(image) : '/images/default.png'
 
-    const handleOnSubmit = (food) => {
-        console.log('submit food', food);
-        fetch('http://localhost:3001/api/food/new', {
-            method: 'POST',
-            body: JSON.stringify(food)
-        }).then(res => {
-            return res.json()
-        })
-      };
+    const handleChange = (e, { name, value }) => { setValue(name, value) }
 
     return (
-        <Form className='food-form' onSubmit={handleSubmit(handleOnSubmit)}>
+        <Form className='food-form' onSubmit={handleSubmit(props.handleOnSubmit)}>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column width={8}>
                             <Form.Input 
-                            label='Name' 
-                            control={Input} 
-                            placeholder='Enter name of food' 
-                            className='food-form__input--text'
-                            {...register('name')}
+                                label='Name'
+                                name='name'
+                                defaultValue={props.updatedFood?.name } 
+                                control={Input} 
+                                placeholder='Enter name of food' 
+                                className='food-form__input--text'
+                                onChange={handleChange}
                             />
                             <Form.Input 
                                 label='Description' 
+                                name='description'
+                                defaultValue={props.updatedFood?.description} 
                                 control={TextArea} 
                                 placeholder='Briefly describe the ingredient' 
                                 className='food-form__input--textarea'
-                                {...register('description')}
+                                onChange={handleChange}
                             />
                         </Grid.Column>
                         <Grid.Column width={4}>
@@ -44,7 +57,6 @@ const FoodForm = (props) => {
                             <Input type='file' 
                                 className='food-form__input--file'
                                 onChange={(e) => setImage(e.target.files[0])}
-                                {...register('imageUrl')}
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -56,31 +68,44 @@ const FoodForm = (props) => {
                             <Form.Group>
                                 <Form.Input
                                     label='Quantity'
+                                    name='quantity'
                                     control={Input}
                                     width={2}
                                     type='number'
-                                    {...register('quantity')}
-
+                                    onChange={handleChange}
+                                    defaultValue={props.updatedFood?.quantity} 
                                 />
                                  <Form.Input
                                     label='Unit'
-                                    placeholder='Choose unit type'
+                                    name='unit'
+                                    placeholder={props.op === 'update' ? 'Choose unit type' : props.updatedFood?.unit}
                                     control={Select}
-                                    options={props.unitOptions}
-                                    {...register('unit')}
+                                    options={unitOptions}
+                                    onChange={handleChange}
+                                    defaultValue={
+                                        props.updatedFood ? 
+                                        {
+                                            label: unitOptions.filter(u => u.value === props.updatedFood.unit),
+                                            value: props.updatedFood?.unit
+                                        }
+                                        : null } 
                                 />
                                  <Form.Input 
                                     label='Food Group' 
+                                    name='foodGroup'
                                     control={Select} 
                                     placeholder='Select food group' 
-                                    options={props.foodGroupOptions}
-                                    {...register('foodGroup')}
+                                    options={foodGroupOptions}
+                                    onChange={handleChange}
+                                    defaultValue={props.updatedFood?.foodGroup}  
                                 />
                                 <Form.Input 
                                     label='Calories' 
+                                    name='calories'
                                     control={Input} 
                                     type='number' 
-                                    {...register('calories')}
+                                    onChange={handleChange}
+                                    defaultValue={props.updatedFood?.calories} 
                                 />
                             </Form.Group>
                         </Grid.Column>
@@ -125,7 +150,9 @@ const FoodForm = (props) => {
                     </Grid.Row>
                 </Grid>
                 <Button color='blue' type='submit'>Submit</Button>
-                <Button color='red'>Cancel</Button>
+                <Link to='/fridge'>
+                    <Button color='red'>Cancel</Button>
+                </Link>
             </Form>
     );
 

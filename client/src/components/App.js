@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
 import 'semantic-ui-css/semantic.min.css'
 
 import Planner from './Planner'
@@ -6,9 +7,35 @@ import Home from './Home'
 import Layout from './Layout'
 import Fridge from './Fridge';
 import CreateFood from './CreateFood'
+import EditFood from './EditFood'
 import './App.scss'
 
-function App() {
+ const App = () => {
+
+  const [data, setData] = useState([])
+
+  const getAllFood = () => {
+    fetch('http://localhost:3001/api/food', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then((response) => {
+      return response.json()
+    })
+    .then((foodList) => {
+      setData(foodList)
+    })
+    .catch(e => {
+      console.log(e)
+    }) 
+  }
+
+  useEffect(() => {
+    getAllFood()
+  }, [])
+
 
   return (
     <Layout>
@@ -21,10 +48,13 @@ function App() {
               <Planner /> 
             </Route>
             <Route exact path="/fridge">
-              <Fridge></Fridge>
+              <Fridge foodList={data} setFoodList={setData} />
             </Route>
-            <Route path="/fridge/new">
-              <CreateFood />
+            <Route exact path="/fridge/new">
+              <CreateFood foodList={data} setFoodList={setData}/>
+            </Route>
+            <Route path="/fridge/:id" >
+              <EditFood foodList={data} setFoodList={setData} />
             </Route>
         </Router>
       </div>

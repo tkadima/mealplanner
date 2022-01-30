@@ -1,35 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Icon } from 'semantic-ui-react'
 
 import './App.scss'
 import Food from './Food'
 
-const Fridge = () => {
-  const [data, setData] = useState([])
+const Fridge = (props) => {
 
-  const getFood = () => {
-    fetch('http://localhost:3001/api/food', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
+  const handleOnDelete = (id) => {
+    fetch(`http://localhost:3001/api/food/${id}`, {
+      headers: {'Content-Type': 'application/json'},
+      method: 'DELETE',
+    }).then(res => {
+      console.log(res)
+      props.setFoodList(props.foodList.filter(item => {
+        return item.id !== id
+      }))
     })
-    .then((response) => {
-      return response.json()
-    })
-    .then((foodList) => {
-      console.log('printing nothing', foodList)
-      setData(foodList)
-    })
-    .catch(e => {
-      console.log(e)
-    }) 
   }
-
-  useEffect(() => {
-    getFood()
-  }, [])
 
   return(
     <div className='fridge fridge__container container'>
@@ -48,12 +36,14 @@ const Fridge = () => {
       </div>
       <Card.Group itemsPerRow={4}>
       {
-        data.map((item, i) => { 
+        props.foodList.map((item, i) => { 
             return <Food 
               key={i} 
+              foodId={item.id}
               name={item.name} 
               description={item.description} 
               imageUrl={item.imageUrl}
+              onDelete={handleOnDelete}
             />
         })
       }

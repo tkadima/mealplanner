@@ -1,4 +1,5 @@
 import { Card, Button, Image } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 const Food = (props) => {
     return (
@@ -9,8 +10,10 @@ const Food = (props) => {
                 <Card.Description className='food__description'>{props.description}</Card.Description>
             </Card.Content>
             <Card.Content extra className='food__actions'>
-                <Button basic color='green'>Edit</Button>
-                <Button basic color='red'>Delete</Button>
+                <Link to={`/fridge/${props.foodId}`}>
+                    <Button basic color='green'>Edit</Button>
+                </Link>
+                <Button basic color='red' onClick={() => props.onDelete(props.foodId)}>Delete</Button>
             </Card.Content> 
         </Card>
     )
