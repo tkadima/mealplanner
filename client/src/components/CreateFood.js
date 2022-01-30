@@ -1,4 +1,3 @@
-import { Button } from 'semantic-ui-react'
 import FoodForm from './FoodForm'
 
 const CreateFood = () => {
@@ -17,21 +16,15 @@ const CreateFood = () => {
         {key: 3, value: 'tsp', text: 'Teaspoons'},
         {key: 4, value: 'oz', text: 'Ounces'},
         {key: 5, value: 'lb', text: 'Pound'}
-
     ]
 
-    const handleOnSubmit = (food) => {
-        console.log(food);
-      };
 
     return (
         <div>
              <h1>
                 Add New Food for Fridge
              </h1>
-            <FoodForm handleOnSubmit={handleOnSubmit} foodGroupOptions={foodGroupOptions} unitOptions={unitOptions}/>
-            <Button color='blue' type='submit' onSubmit={handleOnSubmit}>Submit</Button>
-            <Button color='red'>Cancel</Button>
+            <FoodForm  foodGroupOptions={foodGroupOptions} unitOptions={unitOptions}/>
         </div> 
     )
 }

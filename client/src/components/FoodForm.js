@@ -1,37 +1,42 @@
 import React, { useState } from 'react'
-import {  Form, Grid, Image, Input, Select, TextArea } from 'semantic-ui-react'
+import { Button, Form, Grid, Image, Input, Select, TextArea } from 'semantic-ui-react'
+import { useForm } from 'react-hook-form'
 
 const FoodForm = (props) => {
     const [image, setImage] = useState(null)
-    const [food, setFood] = useState({ name: '', description: '', quantity : 0.0, unit: '', group: '', calories: 0})
+
+    const { register, handleSubmit } = useForm();
 
     let imageUrl = image ? URL.createObjectURL(image) : '/images/default.png'
 
-    const handleSubmit = (e) => {
-        fetch('http://localhost:3001/food/new', {
+    const handleOnSubmit = (food) => {
+        console.log('submit food', food);
+        fetch('http://localhost:3001/api/food/new', {
             method: 'POST',
             body: JSON.stringify(food)
         }).then(res => {
             return res.json()
         })
-        e.preventDefault()
-    }
+      };
+
     return (
-        <Form className='food-form' onSubmit={handleSubmit}>
+        <Form className='food-form' onSubmit={handleSubmit(handleOnSubmit)}>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column width={8}>
-                            <Form.Field 
+                            <Form.Input 
                             label='Name' 
                             control={Input} 
                             placeholder='Enter name of food' 
                             className='food-form__input--text'
+                            {...register('name')}
                             />
-                            <Form.Field 
+                            <Form.Input 
                                 label='Description' 
                                 control={TextArea} 
                                 placeholder='Briefly describe the ingredient' 
                                 className='food-form__input--textarea'
+                                {...register('description')}
                             />
                         </Grid.Column>
                         <Grid.Column width={4}>
@@ -39,6 +44,7 @@ const FoodForm = (props) => {
                             <Input type='file' 
                                 className='food-form__input--file'
                                 onChange={(e) => setImage(e.target.files[0])}
+                                {...register('imageUrl')}
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -48,25 +54,34 @@ const FoodForm = (props) => {
                 <Grid.Row>
                         <Grid.Column>
                             <Form.Group>
-                                <Form.Field
+                                <Form.Input
                                     label='Quantity'
                                     control={Input}
                                     width={2}
                                     type='number'
+                                    {...register('quantity')}
+
                                 />
-                                 <Form.Field
+                                 <Form.Input
                                     label='Unit'
                                     placeholder='Choose unit type'
                                     control={Select}
                                     options={props.unitOptions}
+                                    {...register('unit')}
                                 />
-                                 <Form.Field 
+                                 <Form.Input 
                                     label='Food Group' 
                                     control={Select} 
                                     placeholder='Select food group' 
                                     options={props.foodGroupOptions}
+                                    {...register('foodGroup')}
                                 />
-                                <Form.Field label='Calories' control={Input} type='number'/>
+                                <Form.Input 
+                                    label='Calories' 
+                                    control={Input} 
+                                    type='number' 
+                                    {...register('calories')}
+                                />
                             </Form.Group>
                         </Grid.Column>
                     </Grid.Row>
@@ -109,6 +124,8 @@ const FoodForm = (props) => {
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
+                <Button color='blue' type='submit'>Submit</Button>
+                <Button color='red'>Cancel</Button>
             </Form>
     );
 

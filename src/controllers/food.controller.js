@@ -1,41 +1,17 @@
-const express = require('express')
-const cors = require('cors')
-const path = require('path')
-const bodyParser = require('body-parser')
-const mysql = require('mysql2')
+var db = require('../../server/index')
 
-require('dotenv').config()
-
-const PORT = process.env.PORT || 3001
-const app = express()
-
-app.use(cors())
-app.use(express.json())
-app.use(bodyParser.json())
-
-const db = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB,
-})
-
-app.get("/api", (req, res) => {
-    res.json({ message: 'Hello from the server!' })
-})
-
-app.get('/api/food/', (req, res) => {
+exports.getAllFood = (req, res) => {
     db.query("SELECT * FROM food", (err, result) => {
         if (err) {
             console.log(err)
         }
-        else{
-            res.send(result)
+        else {
+           res.send(result)
         }
     })
-})
-app.post('/api/food/new', (req, res) => {
-    console.log('request body', req.body)
+}
+
+exports.createNewFood = (req, res) => {
     let data = { 
         name: req.body.name,
         description: req.body.description, 
@@ -46,13 +22,13 @@ app.post('/api/food/new', (req, res) => {
         imageUrl: req.body.imageUrl
     } 
     let sql = "INSERT INTO food SET ?"
-    let query = db.query(sql, data, (err, results) => {
+    let query = db.query(sql, data, (err, results) => { 
         if (err) throw err
-        res.send(JSON.stringify({ 'status': 200, 'error': null}))
+        res.send(JSON.stringify({ 'status': 200, 'error': null, 'results': results}))
     })
-})
+}
 
-app.put('/api/food/', (req, res) => {
+exports.updateFood = (req, res) => {
     const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageUrl = ? WHERE id = ?"
     db.query(
         query, 
@@ -67,9 +43,9 @@ app.put('/api/food/', (req, res) => {
             }
         }
     )
-})
+}
 
-app.delete('/api/food/:id', (req, res) => {
+exports.deleteFood = (req, res) => {
     db.query(
         'DELETE FROM food WHERE id = ?', 
         req.params.id, 
@@ -81,7 +57,4 @@ app.delete('/api/food/:id', (req, res) => {
             }
         }
     )
-})
-app.listen(PORT, () => {
-    console.log(`Server listening on port ${PORT}`)
-})
+}
