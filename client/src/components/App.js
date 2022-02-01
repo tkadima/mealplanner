@@ -5,9 +5,9 @@ import 'semantic-ui-css/semantic.min.css'
 import Planner from './Planner'
 import Home from './Home'
 import Layout from './Layout'
-import Fridge from './Fridge';
-import CreateFood from './CreateFood'
-import EditFood from './EditFood'
+import Fridge from './Food/Fridge';
+import CreateFood from './Food/CreateFood'
+import EditFood from './Food/EditFood'
 import './App.scss'
 
  const App = () => {

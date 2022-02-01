@@ -1,13 +1,11 @@
 const express = require('express')
 const cors = require('cors')
-const path = require('path')
 const bodyParser = require('body-parser')
 const mysql = require('mysql2')
-
 require('dotenv').config()
 
-const PORT = process.env.PORT || 3001
 const app = express()
+const PORT = process.env.PORT || 3001
 
 app.use(cors())
 app.use(express.json())
@@ -19,6 +17,7 @@ const db = mysql.createPool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB,
 })
+
 
 app.get("/api", (req, res) => {
     res.json({ message: 'Hello from the server!' })

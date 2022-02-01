@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Icon } from 'semantic-ui-react'
 
-import './App.scss'
+import '../App.scss'
 import Food from './Food'
 
 const Fridge = (props) => {
