@@ -18,19 +18,33 @@ const EditFood = (props) => {
     }, [id, getFoodById])
 
     const handleOnSubmit = (updateFood) => {
-        console.log('updated', updateFood)
         let index = props.foodList.findIndex(f => f.id === parseInt(id))
         var foods = props.foodList
-        for(const property in updateFood) {
-            foods[index][property] = updateFood[property]
+        let formData = new FormData()
+
+        for ( var property in foods[index] ) {
+            if (updateFood[property]) {
+                console.log('changed property', property)
+                console.log('changed value', updateFood[property])
+                formData.append(property, updateFood[property]);
+                foods[index][property] = updateFood[property]
+            }
+            else {
+                console.log('property', property)
+                console.log('value', foods[index][property])
+                formData.append(property, foods[index][property]);
+            }
         }
+        console.log('formdata', formData)
 
         fetch(`http://localhost:3001/api/food/`, {
-            headers: {'Content-Type': 'application/json'},
             method: 'PUT',
-            body: JSON.stringify(foods[index])
+            body: formData
         }).then(res => {
+            console.log(res)
             props.setFoodList(foods)
+        }).catch(err => {
+            console.log(err)
         })
     }
     return(

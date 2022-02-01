@@ -3,6 +3,8 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 const mysql = require('mysql2')
 require('dotenv').config()
+const multer  = require('multer')
+const path = require("path");
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -16,6 +18,29 @@ const db = mysql.createPool({
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB,
+})
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './client/public/images');
+    },
+    filename: (req, file, cb) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-')
+        cb(null, "IMAGE-" + Date.now() + '-' + fileName)
+    }
+});
+
+const upload = multer({ 
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
 })
 
 
@@ -33,8 +58,7 @@ app.get('/api/food/', (req, res) => {
         }
     })
 })
-app.post('/api/food/new', (req, res) => {
-    console.log('server req', req)
+app.post('/api/food/new', upload.single('imageUrl'), (req, res) => {
     let data = { 
         name: req.body.name,
         description: req.body.description, 
@@ -51,12 +75,15 @@ app.post('/api/food/new', (req, res) => {
     })
 })
 
-app.put('/api/food/', (req, res) => {
-    console.log('updating in server')
+app.put('/api/food/', upload.single('imageUrl'), (req, res) => {
+    console.log('request protocol', req.protocol)
+    const url = req.get('origin') + '/client/public/images/' + req.file.filename
+
+    console.log('url', url)
     const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageUrl = ? WHERE id = ?"
     db.query(
         query, 
-        [req.body.name, req.body.description, req.body.quantity, req.body.unit, req.body.foodGroup, req.body.calories, req.body.imageUrl, req.body.id],
+        [req.body.name, req.body.description, req.body.quantity, req.body.unit, req.body.foodGroup, req.body.calories, url, req.body.id],
         (err, result) => {
             if (err) {
                 console.log(err)
@@ -69,7 +96,6 @@ app.put('/api/food/', (req, res) => {
 })
 
 app.delete('/api/food/:id', (req, res) => {
-    console.log('reach delete')
     db.query(
         'DELETE FROM food WHERE id = ?', 
         req.params.id, 

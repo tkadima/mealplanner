@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button, Form, Grid, Image, Input, Select, TextArea } from 'semantic-ui-react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -20,13 +20,28 @@ const FoodForm = (props) => {
         {key: 4, value: 'oz', text: 'Ounces'},
         {key: 5, value: 'lb', text: 'Pound'}
     ]
-    const [image, setImage] = useState(null)
+    const [image, setImage] = useState('/images/default.png')
 
     const { handleSubmit, setValue } = useForm();
 
-    let imageUrl = image ? URL.createObjectURL(image) : '/images/default.png'
+    const getImageUrl = () => {
+        if(props.updatedFood?.imageUrl) {
+            let truncatedUrl = props.updatedFood.imageUrl.split("/public")[1]
+            setImage(truncatedUrl)
+        }
+    }
 
-    const handleChange = (e, { name, value }) => { setValue(name, value) }
+    useEffect(() =>{
+        getImageUrl()
+    })
+
+    const handleChange = (e, { name, value }) => {
+        if (name === 'imageUrl') {
+            value = e.target.files[0]
+            setImage(URL.createObjectURL(value))
+        }
+         setValue(name, value) 
+    }
 
     return (
         <Form className='food-form' onSubmit={handleSubmit(props.handleOnSubmit)}>
@@ -53,10 +68,12 @@ const FoodForm = (props) => {
                             />
                         </Grid.Column>
                         <Grid.Column width={4}>
-                            <Image className="food-form__image"size='small' src={imageUrl} ui={false} />
+                            <Image className="food-form__image"size='small' src={image} ui={false} />
                             <Input type='file' 
+                                name='imageUrl'
+                                enctype='multipart/form-data'
                                 className='food-form__input--file'
-                                onChange={(e) => setImage(e.target.files[0])}
+                                onChange={handleChange}
                             />
                         </Grid.Column>
                     </Grid.Row>
