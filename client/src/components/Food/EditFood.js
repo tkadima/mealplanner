@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
+import axios from 'axios'
 
 import FoodForm from './FoodForm'
 
@@ -24,27 +25,26 @@ const EditFood = (props) => {
 
         for ( var property in foods[index] ) {
             if (updateFood[property]) {
-                console.log('changed property', property)
-                console.log('changed value', updateFood[property])
                 formData.append(property, updateFood[property]);
                 foods[index][property] = updateFood[property]
             }
             else {
-                console.log('property', property)
-                console.log('value', foods[index][property])
                 formData.append(property, foods[index][property]);
             }
         }
-        console.log('formdata', formData)
 
-        fetch(`http://localhost:3001/api/food/`, {
-            method: 'PUT',
-            body: formData
-        }).then(res => {
+        const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+
+        axios.put('http://localhost:3001/api/food/', formData, config)
+        .then(res => {
             console.log(res)
             props.setFoodList(foods)
-        }).catch(err => {
-            console.log(err)
+        }).catch(error => {
+            console.log(error)
         })
     }
     return(

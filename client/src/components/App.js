@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
+import axios from 'axios';
 import 'semantic-ui-css/semantic.min.css'
 
 import Planner from './Planner'
@@ -15,21 +16,12 @@ import './App.scss'
   const [data, setData] = useState([])
 
   const getAllFood = () => {
-    fetch('http://localhost:3001/api/food', {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    })
-    .then((response) => {
-      return response.json()
-    })
-    .then((foodList) => {
+    axios.get('http://localhost:3001/api/food')
+    .then(response => {
+      console.log('response', response)
+      const foodList = response.data
       setData(foodList)
     })
-    .catch(e => {
-      console.log(e)
-    }) 
   }
 
   useEffect(() => {
@@ -53,7 +45,7 @@ import './App.scss'
             <Route exact path="/fridge/new">
               <CreateFood foodList={data} setFoodList={setData}/>
             </Route>
-            <Route path="/fridge/:id" >
+            <Route path="/fridge/update/:id" >
               <EditFood foodList={data} setFoodList={setData} />
             </Route>
         </Router>

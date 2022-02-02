@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Icon } from 'semantic-ui-react'
+import axios from 'axios';
 
 import '../App.scss'
 import Food from './Food'
@@ -8,15 +9,14 @@ import Food from './Food'
 const Fridge = (props) => {
 
   const handleOnDelete = (id) => {
-    fetch(`http://localhost:3001/api/food/${id}`, {
-      headers: {'Content-Type': 'application/json'},
-      method: 'DELETE',
-    }).then(res => {
+    axios.delete(`http://localhost:3001/api/food/${id}`)
+    .then(res => {
       console.log(res)
       props.setFoodList(props.foodList.filter(item => {
-        return item.id !== id
+        return item.id !== id; 
       }))
     })
+    
   }
 
   return(

@@ -76,10 +76,11 @@ app.post('/api/food/new', upload.single('imageUrl'), (req, res) => {
 })
 
 app.put('/api/food/', upload.single('imageUrl'), (req, res) => {
-    console.log('request protocol', req.protocol)
-    const url = req.get('origin') + '/client/public/images/' + req.file.filename
+    let url = null;
+    if (req.file) {
+        url = req.get('origin') + '/client/public/images/' + req.file.filename
+    }
 
-    console.log('url', url)
     const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageUrl = ? WHERE id = ?"
     db.query(
         query, 
