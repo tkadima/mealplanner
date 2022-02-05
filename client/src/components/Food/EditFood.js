@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { useCallback, useEffect, useState } from 'react'
 import axios from 'axios'
 
@@ -6,6 +6,7 @@ import FoodForm from './FoodForm'
 
 const EditFood = (props) => {
 
+    let history = useHistory(); 
     const { id } = useParams()
     const [food, setFood] = useState(null)
 
@@ -43,7 +44,11 @@ const EditFood = (props) => {
         .then(res => {
             console.log(res)
             props.setFoodList(foods)
-        }).catch(error => {
+        })
+        .then(res => {
+            history.push('/fridge')
+        })
+        .catch(error => {
             console.log(error)
         })
     }

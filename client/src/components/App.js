@@ -18,7 +18,6 @@ import './App.scss'
   const getAllFood = () => {
     axios.get('http://localhost:3001/api/food')
     .then(response => {
-      console.log('response', response)
       const foodList = response.data
       setData(foodList)
     })

@@ -19,7 +19,6 @@ const FoodForm = (props) => {
         {key: 4, value: 'oz', text: 'Ounces'},
         {key: 5, value: 'lb', text: 'Pound'}
     ]
-    const [foodImage, setFoodImage] = useState('/images/default.png')
 
     const [food, setFood] = useState( {
         name: '', 
@@ -73,7 +72,11 @@ const FoodForm = (props) => {
                             />
                         </Grid.Column>
                         <Grid.Column width={4}>
-                            <Image className="food-form__image"size='small' src={foodImage} ui={false} />
+                            <Image className="food-form__image"
+                                   size='small' 
+                                   src={props.updatedFood?.imageUrl ? props.updatedFood.imageUrl : '/images/default.png'} 
+                                   ui={false} 
+                            />
                             <Input type='file' 
                                 id='file'
                                 name='imageUrl'

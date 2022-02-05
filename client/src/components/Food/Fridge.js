@@ -8,23 +8,35 @@ import Food from './Food'
 
 const Fridge = (props) => {
 
+
   const handleOnDelete = (id) => {
-    axios.delete(`http://localhost:3001/api/food/${id}`)
-    .then(res => {
-      props.setFoodList(props.foodList.filter(item => {
-        return item.id !== id; 
-      }))
+
+    let deletedFood = props.foodList.find(item => {
+      return item.id === id
     })
-    
+
+    let confirmed = window.confirm(`Are you sure you want to delete ${deletedFood.name} from the fridge?`) 
+    if (confirmed) {
+      axios.delete(`http://localhost:3001/api/food/${id}`)
+      .then(res => {
+        props.setFoodList(props.foodList.filter(item => {
+          return item.id !== id
+        }))
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
   }
 
   const handleDeleteAll = () => {
-    //add "are you sure" dialog
-    axios.delete('http://localhost:3001/api/food')
-    .then(res => {
-      console.log(res)
-      props.setFoodList([])
-    })
+    let confirmed = window.confirm(`Are you sure you want to delete all ${props.foodList.length} items from the fridge?`) 
+    if (confirmed) {
+      axios.delete('http://localhost:3001/api/food')
+      .then(res => {
+        props.setFoodList([])
+      })
+    }
   }
 
   return(
@@ -42,7 +54,6 @@ const Fridge = (props) => {
             />  
         </Link>
       </div>
-      <Button onClick={handleDeleteAll}>Clear Fridge</Button>
       <Card.Group itemsPerRow={4}>
       {
         props.foodList.map((item, i) => { 
@@ -57,6 +68,9 @@ const Fridge = (props) => {
         })
       }
       </Card.Group>
+      <div>
+        <Button onClick={handleDeleteAll} disabled={props.foodList.length === 0}>Clear Fridge</Button>
+      </div>
     </div>
   )
 }
