@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Card, Icon } from 'semantic-ui-react'
+import { Button, Card, Icon } from 'semantic-ui-react'
 import axios from 'axios';
 
 import '../App.scss'
@@ -11,12 +11,20 @@ const Fridge = (props) => {
   const handleOnDelete = (id) => {
     axios.delete(`http://localhost:3001/api/food/${id}`)
     .then(res => {
-      console.log(res)
       props.setFoodList(props.foodList.filter(item => {
         return item.id !== id; 
       }))
     })
     
+  }
+
+  const handleDeleteAll = () => {
+    //add "are you sure" dialog
+    axios.delete('http://localhost:3001/api/food')
+    .then(res => {
+      console.log(res)
+      props.setFoodList([])
+    })
   }
 
   return(
@@ -34,6 +42,7 @@ const Fridge = (props) => {
             />  
         </Link>
       </div>
+      <Button onClick={handleDeleteAll}>Clear Fridge</Button>
       <Card.Group itemsPerRow={4}>
       {
         props.foodList.map((item, i) => { 

@@ -1,15 +1,21 @@
 import axios from 'axios'
+import * as FormData from 'form-data'
 
 import FoodForm from './FoodForm'
 
 const CreateFood = (props) => {
 
     const handleOnSubmit = (food) => {
-        axios.post('http://localhost:3001/api/food/new', food)
-            .then(res => {
-                console.log('res', res)
-                props.setFoodList([...props.foodList, {res}])
-            })
+         let formData = new FormData()
+
+        for (let property in food) {
+            formData.append(property, food[property])
+        }
+        
+        axios.post('http://localhost:3001/api/food/new', formData)
+        .then(res => {
+            props.setFoodList([...props.foodList, {res}])
+        })
     }
 
     return (

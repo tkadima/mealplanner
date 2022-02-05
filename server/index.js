@@ -9,9 +9,10 @@ const path = require("path");
 const app = express()
 const PORT = process.env.PORT || 3001
 
-app.use(cors())
 app.use(express.json())
 app.use(bodyParser.json())
+app.use(cors())
+app.use(express.static('uploads\images'));
 
 const db = mysql.createPool({
     host: process.env.DB_HOST,
@@ -23,24 +24,25 @@ const db = mysql.createPool({
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './client/public/images');
+        cb(null, './uploads/images');
     },
     filename: (req, file, cb) => {
+        console.log('storage file', file)
         const fileName = file.originalname.toLowerCase().split(' ').join('-')
         cb(null, "IMAGE-" + Date.now() + '-' + fileName)
     }
 });
 
 const upload = multer({ 
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-            cb(null, true);
-        } else {
-            cb(null, false);
-            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-        }
-    }
+    storage: storage
+    // fileFilter: (req, file, cb) => {
+    //     if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+    //         cb(null, true);
+    //     } else {
+    //         cb(null, false);
+    //         return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+    //     }
+    // }
 })
 
 
@@ -78,7 +80,7 @@ app.post('/api/food/new', upload.single('imageUrl'), (req, res) => {
 app.put('/api/food/', upload.single('imageUrl'), (req, res) => {
     let url = null;
     if (req.file) {
-        url = req.get('origin') + '/client/public/images/' + req.file.filename
+        url = req.get('origin') + '/upload/images/' + req.file.filename
     }
 
     const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageUrl = ? WHERE id = ?"
@@ -109,6 +111,21 @@ app.delete('/api/food/:id', (req, res) => {
         }
     )
 })
+
+app.delete('/api/food', (req, res) => {
+    console.log('delete all')
+    db.query(
+        'DELETE FROM food',
+        (err, result) => {
+            if(err){
+                console.log(err)
+            }else {
+                res.send(result)
+            }
+        }
+    )
+})
+
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
 })

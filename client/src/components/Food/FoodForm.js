@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, Form, Grid, Image, Input, Select, TextArea } from 'semantic-ui-react'
-import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 
 const FoodForm = (props) => {
@@ -20,31 +19,37 @@ const FoodForm = (props) => {
         {key: 4, value: 'oz', text: 'Ounces'},
         {key: 5, value: 'lb', text: 'Pound'}
     ]
-    const [image, setImage] = useState('/images/default.png')
+    const [foodImage, setFoodImage] = useState('/images/default.png')
 
-    const { handleSubmit, setValue } = useForm();
-
-    const getImageUrl = () => {
-        if(props.updatedFood?.imageUrl) {
-            let truncatedUrl = props.updatedFood.imageUrl.split("/public")[1]
-            setImage(truncatedUrl)
-        }
-    }
-
-    useEffect(() =>{
-        getImageUrl()
+    const [food, setFood] = useState( {
+        name: '', 
+        description: '',
+        imageUrl: null,
+        image: null, 
+        imageName: null, 
+        quantity: 0, 
+        unit: null, 
+        foodGroup: null, 
+        calories: null
     })
 
-    const handleChange = (e, { name, value }) => {
-        if (name === 'imageUrl') {
-            value = e.target.files[0]
-            setImage(URL.createObjectURL(value))
-        }
-         setValue(name, value) 
+    const onSelectChange = (e, data) => {
+        let property = data.name
+        setFood(food => ({
+            ...food,
+            [property]: data.value 
+        }))
+    }
+
+    const handleChange = (property, value) => {
+            setFood(food => ({
+                ...food, 
+                [property]: value
+            }))
     }
 
     return (
-        <Form className='food-form' onSubmit={handleSubmit(props.handleOnSubmit)}>
+        <Form className='food-form' onSubmit={() => props.handleOnSubmit(food)} encType='multipart/form'>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column width={8}>
@@ -55,7 +60,7 @@ const FoodForm = (props) => {
                                 control={Input} 
                                 placeholder='Enter name of food' 
                                 className='food-form__input--text'
-                                onChange={handleChange}
+                                onChange={e => handleChange('name', e.target.value)}
                             />
                             <Form.Input 
                                 label='Description' 
@@ -64,16 +69,17 @@ const FoodForm = (props) => {
                                 control={TextArea} 
                                 placeholder='Briefly describe the ingredient' 
                                 className='food-form__input--textarea'
-                                onChange={handleChange}
+                                onChange={e => handleChange('description', e.target.value)}
                             />
                         </Grid.Column>
                         <Grid.Column width={4}>
-                            <Image className="food-form__image"size='small' src={image} ui={false} />
+                            <Image className="food-form__image"size='small' src={foodImage} ui={false} />
                             <Input type='file' 
+                                id='file'
                                 name='imageUrl'
                                 enctype='multipart/form-data'
                                 className='food-form__input--file'
-                                onChange={handleChange}
+                                onChange={e => handleChange('imageUrl', e.target.files[0])}
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -89,7 +95,7 @@ const FoodForm = (props) => {
                                     control={Input}
                                     width={2}
                                     type='number'
-                                    onChange={handleChange}
+                                    onChange={e => handleChange('quantity', e.target.value)}
                                     defaultValue={props.updatedFood?.quantity} 
                                 />
                                  <Form.Input
@@ -98,7 +104,7 @@ const FoodForm = (props) => {
                                     placeholder={props.op === 'update' ? 'Choose unit type' : props.updatedFood?.unit}
                                     control={Select}
                                     options={unitOptions}
-                                    onChange={handleChange}
+                                    onChange={onSelectChange}
                                     defaultValue={
                                         props.updatedFood ? 
                                         {
@@ -113,7 +119,7 @@ const FoodForm = (props) => {
                                     control={Select} 
                                     placeholder='Select food group' 
                                     options={foodGroupOptions}
-                                    onChange={handleChange}
+                                    onChange={onSelectChange}
                                     defaultValue={props.updatedFood?.foodGroup}  
                                 />
                                 <Form.Input 
@@ -121,7 +127,7 @@ const FoodForm = (props) => {
                                     name='calories'
                                     control={Input} 
                                     type='number' 
-                                    onChange={handleChange}
+                                    onChange={e => handleChange('calories', e.target.value)}
                                     defaultValue={props.updatedFood?.calories} 
                                 />
                             </Form.Group>
