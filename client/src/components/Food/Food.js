@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 const Food = (props) => {
     const displayImage = () => {
         if (props.imageUrl != null) {
+            console.log('imageurl', props.imageUrl)
             return props.imageUrl
         }
         else {

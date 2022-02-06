@@ -6,11 +6,9 @@ import axios from 'axios';
 import '../App.scss'
 import Food from './Food'
 
+
 const Fridge = (props) => {
-
-
   const handleOnDelete = (id) => {
-
     let deletedFood = props.foodList.find(item => {
       return item.id === id
     })

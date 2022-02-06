@@ -3,6 +3,7 @@ import { Button, Form, Grid, Image, Input, Select, TextArea } from 'semantic-ui-
 import { Link } from 'react-router-dom'
 
 const FoodForm = (props) => {
+
     const foodGroupOptions = [
         {key: 0, value: 'dairy', text: 'Dairy'},
         {key: 1, value: 'fruit', text: 'Fruit'},
@@ -20,16 +21,18 @@ const FoodForm = (props) => {
         {key: 5, value: 'lb', text: 'Pound'}
     ]
 
-    const [food, setFood] = useState( {
+    const [food, setFood] = useState({
         name: '', 
         description: '',
-        imageUrl: null,
-        image: null, 
-        imageName: null, 
         quantity: 0, 
         unit: null, 
         foodGroup: null, 
         calories: null
+    })
+
+    const [foodImage, setFoodImage] = useState({
+        file: [],
+        imagePreview: null
     })
 
     const onSelectChange = (e, data) => {
@@ -41,20 +44,28 @@ const FoodForm = (props) => {
     }
 
     const handleChange = (property, value) => {
+        if (property === 'imageFile') {
+            setFoodImage(foodImage => ({
+                ...foodImage,
+                file: value,
+                imagePreview: URL.createObjectURL(value)
+            }))
+        }
+        else {
             setFood(food => ({
                 ...food, 
                 [property]: value
             }))
+        }
     }
 
     return (
-        <Form className='food-form' onSubmit={() => props.handleOnSubmit(food)} encType='multipart/form'>
+        <Form className='food-form' onSubmit={() => props.handleOnSubmit(food, foodImage)} encType='multipart/form'>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column width={8}>
                             <Form.Input 
                                 label='Name'
-                                name='name'
                                 defaultValue={props.updatedFood?.name } 
                                 control={Input} 
                                 placeholder='Enter name of food' 
@@ -63,7 +74,6 @@ const FoodForm = (props) => {
                             />
                             <Form.Input 
                                 label='Description' 
-                                name='description'
                                 defaultValue={props.updatedFood?.description} 
                                 control={TextArea} 
                                 placeholder='Briefly describe the ingredient' 
@@ -72,17 +82,20 @@ const FoodForm = (props) => {
                             />
                         </Grid.Column>
                         <Grid.Column width={4}>
-                            <Image className="food-form__image"
-                                   size='small' 
-                                   src={props.updatedFood?.imageUrl ? props.updatedFood.imageUrl : '/images/default.png'} 
-                                   ui={false} 
+                            <Image className="food-image_preview"
+                                size='small' 
+                                src={foodImage.imagePreview ? foodImage.imagePreview : '/images/default.png'} // add default 
+                                ui={false} 
+                                alt='Upload image'
                             />
-                            <Input type='file' 
+
+                            <Input 
+                                className='food-image__input'
+                                name='imageFile'
+                                type='file' 
                                 id='file'
-                                name='imageUrl'
                                 enctype='multipart/form-data'
-                                className='food-form__input--file'
-                                onChange={e => handleChange('imageUrl', e.target.files[0])}
+                                onChange={e => handleChange('imageFile', e.target.files[0])}
                             />
                         </Grid.Column>
                     </Grid.Row>
