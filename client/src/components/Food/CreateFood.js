@@ -8,13 +8,7 @@ const CreateFood = (props) => {
     let history = useHistory(); 
 
     const handleOnSubmit = (food, foodImage) => {
-         let foodFormData = new FormData()
          let imageFormData = new FormData()
-
-        for (let property in food) {
-            foodFormData.append(property, food[property])
-        }
-
         imageFormData.append('imageFile', foodImage.file)
 
         Promise.all([
@@ -23,21 +17,21 @@ const CreateFood = (props) => {
                     'content-type': 'multipart/form-data'
                 }
             }),
-            axios.post('http://localhost:3001/api/food/new', foodFormData, {
+            axios.post('http://localhost:3001/api/food/new', food, {
                 headers: {
                     'content-type':'application/json'
                 }
-            }),
-
+            })
         ])
-        .then(axios.spread((foodResponse, imageResponse) => {
-            console.log('foodresponse', foodResponse)
-            console.log('imageResponse', imageResponse)
-           // props.setFoodList([...props.foodList, res.data])
+        .then(axios.spread((imageResponse, foodResponse) => {
+            props.setFoodList([...props.foodList, foodResponse.data])
         }))
         .then(res => {
             history.push('/fridge')
         })
+        .catch(error => {
+            console.log(error)
+        }) 
     }
 
     return (

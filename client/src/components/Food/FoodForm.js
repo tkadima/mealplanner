@@ -58,7 +58,6 @@ const FoodForm = (props) => {
             }))
         }
     }
-
     return (
         <Form className='food-form' onSubmit={() => props.handleOnSubmit(food, foodImage)} encType='multipart/form'>
                 <Grid columns={2}>

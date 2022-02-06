@@ -1,6 +1,6 @@
+const bodyParser = require('body-parser')
 const express = require('express')
 const cors = require('cors')
-const bodyParser = require('body-parser')
 const mysql = require('mysql2')
 require('dotenv').config()
 const multer  = require('multer')
@@ -8,8 +8,8 @@ const multer  = require('multer')
 const app = express()
 const PORT = process.env.PORT || 3001
 
-app.use(express.json())
 app.use(bodyParser.json())
+app.use(express.json())
 app.use(cors())
 app.use(express.static('uploads/images'));
 
@@ -27,11 +27,9 @@ app.get("/api", (req, res) => {
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        console.log('inside multer destination')
         cb(null, './uploads/images');
     },
     filename: (req, file, cb) => {
-        console.log('just debugging')
         const fileName = file.originalname.toLowerCase().split(' ').join('-')
         cb(null, "IMAGE-" + Date.now() + '-' + fileName)
     }
@@ -50,8 +48,10 @@ const upload = multer({
 })
 
 app.post('/imageUpload', upload.single('imageFile'), (req, res) => {
+    res.json({})
     console.log(req.file)
 })
+
 
 
 app.get('/api/food/', (req, res) => {
@@ -66,7 +66,6 @@ app.get('/api/food/', (req, res) => {
 })
 
 app.post('/api/food/new', (req, res) => {
-    console.log('post body', req.body)
     let data = { 
         name: req.body.name,
         description: req.body.description, 
@@ -120,7 +119,6 @@ app.delete('/api/food/:id', (req, res) => {
 })
 
 app.delete('/api/food', (req, res) => {
-    console.log('delete all')
     db.query(
         'DELETE FROM food',
         (err, result) => {
