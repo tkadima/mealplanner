@@ -20,6 +20,7 @@ const EditFood = (props) => {
     }, [id, getFoodById])
 
     const handleOnSubmit = (updateFood) => {
+        //todo handle changing files 
         let index = props.foodList.findIndex(f => f.id === parseInt(id))
         var foods = props.foodList
         let formData = new FormData()

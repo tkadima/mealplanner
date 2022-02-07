@@ -50,6 +50,10 @@ const FoodForm = (props) => {
                 file: value,
                 imagePreview: URL.createObjectURL(value)
             }))
+            setFood(food => ({
+                ...food,
+                imageUrl: URL.createObjectURL(value)
+            }))
         }
         else {
             setFood(food => ({

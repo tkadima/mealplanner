@@ -8,7 +8,8 @@ const CreateFood = (props) => {
     let history = useHistory(); 
 
     const handleOnSubmit = (food, foodImage) => {
-         let imageFormData = new FormData()
+        console.log('this is what the file looks like', foodImage.file)
+        let imageFormData = new FormData()
         imageFormData.append('imageFile', foodImage.file)
 
         Promise.all([
@@ -24,6 +25,7 @@ const CreateFood = (props) => {
             })
         ])
         .then(axios.spread((imageResponse, foodResponse) => {
+            console.log('image response', imageResponse.data)
             props.setFoodList([...props.foodList, foodResponse.data])
         }))
         .then(res => {
