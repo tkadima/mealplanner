@@ -8,26 +8,22 @@ const CreateFood = (props) => {
     let history = useHistory(); 
 
     const handleOnSubmit = (food, foodImage) => {
-        console.log('this is what the file looks like', foodImage.file)
-        let imageFormData = new FormData()
-        imageFormData.append('imageFile', foodImage.file)
+        let formData = new FormData()
 
-        Promise.all([
-            axios.post('http://localhost:3001/imageUpload', imageFormData, {
-                headers: {
-                    'content-type': 'multipart/form-data'
-                }
-            }),
-            axios.post('http://localhost:3001/api/food/new', food, {
-                headers: {
-                    'content-type':'application/json'
-                }
-            })
-        ])
-        .then(axios.spread((imageResponse, foodResponse) => {
-            console.log('image response', imageResponse.data)
-            props.setFoodList([...props.foodList, foodResponse.data])
-        }))
+        for(let property in food) {
+            formData.append(property, food[property])
+        }
+
+        formData.append('imageFile', foodImage.file)
+
+        axios.post('http://localhost:3001/api/food/new', formData, {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        })
+        .then(response => {
+            props.setFoodList([...props.foodList, response.data.food])
+        })
         .then(res => {
             history.push('/fridge')
         })

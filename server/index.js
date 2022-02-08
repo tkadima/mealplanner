@@ -4,6 +4,7 @@ const cors = require('cors')
 const mysql = require('mysql2')
 require('dotenv').config()
 const multer  = require('multer')
+const { response } = require('express')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -30,7 +31,6 @@ const storage = multer.diskStorage({
         cb(null, './uploads/images');
     },
     filename: (req, file, cb) => {
-        console.log('server file', file)
         const fileName = file.originalname.toLowerCase().split(' ').join('-')
         cb(null, "IMAGE-" + Date.now() + '-' + fileName)
     }
@@ -48,33 +48,20 @@ const upload = multer({
     }
 })
 
-app.post('/imageUpload', upload.single('imageFile'), (req, res) => {
-    res.send({file: req.file})
-})
-
-app.post('/api/food/new', (req, res) => {
-    let data = { 
+app.post('/api/food/new', upload.single('imageFile'), (req, res) => {
+    let food = { 
         name: req.body.name,
         description: req.body.description, 
         quantity: req.body.quantity, 
         unit: req.body.unit,
         foodGroup: req.body.group, 
         calories: req.body.calories,
-        imageFileName: req.body.imageUrl
+        imageFileName: req.file.filename
     } 
     let sql = "INSERT INTO food SET ?"
-    let query = db.query(sql, data, (err) => {
-        console.log('data', data)
+    let query = db.query(sql, food, (err) => {
         if (err) throw err
-        res.send({ 
-            name: req.body.name,
-            description: req.body.description, 
-            quantity: req.body.quantity, 
-            unit: req.body.unit,
-            foodGroup: req.body.group, 
-            calories: req.body.calories,
-            imageFileName: req.body.imageUrl
-        } )
+        res.send({food, file: req.file})
     })
 })
 
@@ -89,25 +76,21 @@ app.get('/api/food/', (req, res) => {
     })
 })
 
-// app.get('/images', (req, res) => {
-//     fs.readdir('/uploads/images', (err, files) => {
-//         files.forEach(file => {
-//             console('file', file)
-//         })
-//     })
-// })
 
-app.put('/api/food/', (req, res) => {
-    const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ? WHERE id = ?"
+app.put('/api/food/', upload.single('imageFile'), (req, res) => {
+    const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageFileName = ? WHERE id = ?"
     db.query(
         query, 
-        [req.body.name, req.body.description, req.body.quantity, req.body.unit, req.body.foodGroup, req.body.calories, req.body.id],
+        [req.body.name, req.body.description, req.body.quantity, req.body.unit, 
+            req.body.foodGroup, req.body.calories, req.file.filename, req.body.id],
         (err, result) => {
             if (err) {
                 console.log(err)
             }
             else {
-                res.send(result)
+                res.setHeader('Content-Type', 'application/json')
+                let responseBody = {...req.body, imageFileName: req.file.filename}
+                res.status(200).send(responseBody)
             }
         }
     )

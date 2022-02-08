@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom'
 
 const Food = (props) => {
     const displayImage = () => {
-        if (props.imageUrl != null) {
-            console.log('imageurl', props.imageUrl)
-            return props.imageUrl
+        if (props.imageFileName != null) {
+            return 'http://localhost:3001/' + props.imageFileName
         }
         else {
             return '/images/default.png';

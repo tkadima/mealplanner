@@ -60,7 +60,7 @@ const Fridge = (props) => {
               foodId={item.id}
               name={item.name} 
               description={item.description} 
-              imageUrl={item.imageUrl}
+              imageFileName={item.imageFileName}
               onDelete={handleOnDelete}
             />
         })

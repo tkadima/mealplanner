@@ -8,7 +8,7 @@ const EditFood = (props) => {
 
     let history = useHistory(); 
     const { id } = useParams()
-    const [food, setFood] = useState(null)
+    const [food, setFood] = useState()
 
     const getFoodById = useCallback((foodId) => {
         var foodToUpdate =  props.foodList.find(f => f.id === parseInt(foodId))
@@ -19,21 +19,14 @@ const EditFood = (props) => {
         getFoodById(id)
     }, [id, getFoodById])
 
-    const handleOnSubmit = (updateFood) => {
-        //todo handle changing files 
-        let index = props.foodList.findIndex(f => f.id === parseInt(id))
-        var foods = props.foodList
+    const handleOnSubmit = (updatedFood, updatedImage) => {
         let formData = new FormData()
 
-        for ( var property in foods[index] ) {
-            if (updateFood[property]) {
-                formData.append(property, updateFood[property]);
-                foods[index][property] = updateFood[property]
-            }
-            else {
-                formData.append(property, foods[index][property]);
-            }
+        for ( var property in updatedFood) {
+            formData.append(property, updatedFood[property]);
         }
+
+        formData.append('imageFile', updatedImage.file)
 
         const config = {
             headers: {
@@ -43,8 +36,14 @@ const EditFood = (props) => {
 
         axios.put('http://localhost:3001/api/food/', formData, config)
         .then(res => {
-            console.log(res)
-            props.setFoodList(foods)
+
+            let emptyValues = ['0', 'null']
+            for (var property in food) {
+                console.log('value to parse', res.data[property])
+                if (res.data[property] && !emptyValues.includes(res.data[property])) {
+                    food[property] = res.data[property]
+                }
+            }
         })
         .then(res => {
             history.push('/fridge')

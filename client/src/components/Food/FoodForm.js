@@ -22,12 +22,13 @@ const FoodForm = (props) => {
     ]
 
     const [food, setFood] = useState({
-        name: '', 
-        description: '',
-        quantity: 0, 
-        unit: null, 
-        foodGroup: null, 
-        calories: null
+        name: props.updatedFood?.name ?? '', 
+        description: props.updatedFood?.description ?? '',
+        quantity: props.updatedFood?.quantity ?? 0, 
+        unit: props.updatedFood?.unit ?? '', 
+        foodGroup: props.updatedFood?.foodGroup ?? null, 
+        calories: props.updatedFood?.calories ?? null, 
+        imageFileName: props.updatedFood?.imageFileName ?? null
     })
 
     const [foodImage, setFoodImage] = useState({
@@ -50,16 +51,24 @@ const FoodForm = (props) => {
                 file: value,
                 imagePreview: URL.createObjectURL(value)
             }))
-            setFood(food => ({
-                ...food,
-                imageUrl: URL.createObjectURL(value)
-            }))
         }
         else {
             setFood(food => ({
                 ...food, 
                 [property]: value
             }))
+        }
+    }
+
+    const displayImage = () => {
+        if (foodImage?.imagePreview) {
+            return foodImage.imagePreview
+        }
+        else if (props.updatedFood?.imageFileName) {
+            return 'http://localhost:3001/' + props.updatedFood.imageFileName
+        }
+        else {
+            return '/images/default.png'
         }
     }
     return (
@@ -87,7 +96,7 @@ const FoodForm = (props) => {
                         <Grid.Column width={4}>
                             <Image className="food-image_preview"
                                 size='small' 
-                                src={foodImage.imagePreview ? foodImage.imagePreview : '/images/default.png'} // add default 
+                                src={displayImage()}
                                 ui={false} 
                                 alt='Upload image'
                             />
