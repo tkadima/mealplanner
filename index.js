@@ -22,7 +22,8 @@ const db = mysql.createPool({
 })
 
 //app.use(express.static(path.resolve(__dirname, "./client/public")));
-app.use(express.static(__dirname + '/public'))
+console.log('dirname: ', __dirname)
+app.use(express.static(__dirname + '/client/public'))
 
 
 app.get("/", (req, res) => {
@@ -56,7 +57,6 @@ const upload = multer({
 })
 
 app.post('/api/food/new', upload.single('imageFile'), (req, res) => {
-    console.log('file', req.file)
     let food = { 
         name: req.body.name,
         description: req.body.description, 
