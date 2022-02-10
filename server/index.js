@@ -4,7 +4,6 @@ const cors = require('cors')
 const mysql = require('mysql2')
 require('dotenv').config()
 const multer  = require('multer')
-const { response } = require('express')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -21,10 +20,15 @@ const db = mysql.createPool({
     database: process.env.DB,
 })
 
+if (process.env.NODE_ENV === "production") {
+    app.get('/', (req, res) => {
+      res.sendFile(path.join(__dirname+'/client/public/index.html'));
+    });
+}
+
 app.get("/api", (req, res) => {
     res.json({ message: 'Hello from the server!' })
 })
-
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -49,6 +53,7 @@ const upload = multer({
 })
 
 app.post('/api/food/new', upload.single('imageFile'), (req, res) => {
+    console.log('file', req.file)
     let food = { 
         name: req.body.name,
         description: req.body.description, 
