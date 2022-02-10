@@ -26,7 +26,7 @@ app.use(express.static(__dirname + '/public'))
 
 
 app.get("/", (req, res) => {
-    response.send('Hello World!')
+    res.send('Hello World!')
 })
 
 app.get("/api", (req, res) => {
