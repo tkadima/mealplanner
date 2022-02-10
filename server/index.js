@@ -4,6 +4,7 @@ const cors = require('cors')
 const mysql = require('mysql2')
 require('dotenv').config()
 const multer  = require('multer')
+const path = require('path')
 
 const app = express()
 const PORT = process.env.PORT || 3001
