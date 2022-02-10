@@ -22,8 +22,9 @@ const db = mysql.createPool({
 })
 
 //app.use(express.static(path.resolve(__dirname, "./client/public")));
-console.log('dirname: ', __dirname)
-app.use(express.static(__dirname + '/client/public'))
+
+//onsole.log('dirname: ', __dirname)
+app.use(express.static('/client/public'))
 
 
 app.get("/", (req, res) => {
