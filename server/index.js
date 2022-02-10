@@ -21,11 +21,7 @@ const db = mysql.createPool({
     database: process.env.DB,
 })
 
-if (process.env.NODE_ENV === "production") {
-    app.get('/', (req, res) => {
-      res.sendFile(path.join(__dirname+'./client/public/index.html'));
-    });
-}
+app.use(express.static(path.resolve(__dirname, "./client/public")));
 
 app.get("/api", (req, res) => {
     res.json({ message: 'Hello from the server!' })
