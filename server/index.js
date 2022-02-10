@@ -21,7 +21,13 @@ const db = mysql.createPool({
     database: process.env.DB,
 })
 
-app.use(express.static(path.resolve(__dirname, "./client/public")));
+//app.use(express.static(path.resolve(__dirname, "./client/public")));
+app.use(express.static(__dirname + '/public'))
+
+
+app.get("/", (req, res) => {
+    response.send('Hello World!')
+})
 
 app.get("/api", (req, res) => {
     res.json({ message: 'Hello from the server!' })
