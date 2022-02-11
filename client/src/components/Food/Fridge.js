@@ -58,7 +58,8 @@ const Fridge = (props) => {
             return <Food 
               key={i} 
               foodId={item.id}
-              name={item.name} 
+              name={item.name}
+              foodGroup={item.foodGroup}
               description={item.description} 
               imageFileName={item.imageFileName}
               onDelete={handleOnDelete}

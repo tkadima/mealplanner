@@ -106,7 +106,6 @@ const FoodForm = (props) => {
                                 name='imageFile'
                                 type='file' 
                                 id='file'
-                                enctype='multipart/form-data'
                                 onChange={e => handleChange('imageFile', e.target.files[0])}
                             />
                         </Grid.Column>
@@ -126,29 +125,21 @@ const FoodForm = (props) => {
                                     onChange={e => handleChange('quantity', e.target.value)}
                                     defaultValue={props.updatedFood?.quantity} 
                                 />
-                                 <Form.Input
+                                 <Form.Dropdown
                                     label='Unit'
                                     name='unit'
                                     placeholder={props.op === 'update' ? 'Choose unit type' : props.updatedFood?.unit}
                                     control={Select}
                                     options={unitOptions}
                                     onChange={onSelectChange}
-                                    defaultValue={
-                                        props.updatedFood ? 
-                                        {
-                                            label: unitOptions.filter(u => u.value === props.updatedFood.unit),
-                                            value: props.updatedFood?.unit
-                                        }
-                                        : null } 
                                 />
-                                 <Form.Input 
+                                 <Form.Dropdown 
                                     label='Food Group' 
                                     name='foodGroup'
                                     control={Select} 
                                     placeholder='Select food group' 
                                     options={foodGroupOptions}
                                     onChange={onSelectChange}
-                                    defaultValue={props.updatedFood?.foodGroup}  
                                 />
                                 <Form.Input 
                                     label='Calories' 

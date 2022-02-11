@@ -10,8 +10,20 @@ const Food = (props) => {
             return '/images/default.png';
         }
     }
+
+        let colorDict = {
+            'dairy': 'blue', 
+            'fruit': 'red',
+            'grain': 'orange',
+            'protein': 'purple',
+            'other': 'grey',
+            'vegetable': 'green'
+
+        }
+    
+
     return (
-        <Card className='food'>
+        <Card className='food' color={colorDict[props.foodGroup]}>
             <Card.Content>
                 <Image className="food__image"size='small' src={displayImage()}  wrapped />
                 <Card.Header className='food__header'>{props.name}</Card.Header>

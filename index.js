@@ -28,7 +28,7 @@ app.use(express.static('/client/public'))
 
 
 app.get("/", (req, res) => {
-    res.send('Hello World!')
+    res.sendFile(path.resolve(__dirname, 'client', 'public', 'index.html'));
 })
 
 app.get("/api", (req, res) => {
