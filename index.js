@@ -65,7 +65,7 @@ app.post('/api/food/new', upload.single('imageFile'), (req, res) => {
         unit: req.body.unit,
         foodGroup: req.body.group, 
         calories: req.body.calories,
-        imageFileName: req.file.filename
+        imageFile: req.file
     } 
     let sql = "INSERT INTO food SET ?"
     let query = db.query(sql, food, (err) => {
@@ -87,6 +87,7 @@ app.get('/api/food/', (req, res) => {
 
 
 app.put('/api/food/', upload.single('imageFile'), (req, res) => {
+    console.log('file', req.file)
     const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageFileName = ? WHERE id = ?"
     db.query(
         query, 

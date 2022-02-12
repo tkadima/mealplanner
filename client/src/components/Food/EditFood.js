@@ -21,7 +21,7 @@ const EditFood = (props) => {
 
     const handleOnSubmit = (updatedFood, updatedImage) => {
         let formData = new FormData()
-
+        console.log('updated', updatedFood)
         for ( var property in updatedFood) {
             formData.append(property, updatedFood[property]);
         }

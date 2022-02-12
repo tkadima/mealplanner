@@ -21,14 +21,14 @@ const FoodForm = (props) => {
         {key: 5, value: 'lb', text: 'Pound'}
     ]
 
-    const [food, setFood] = useState({
-        name: props.updatedFood?.name ?? '', 
-        description: props.updatedFood?.description ?? '',
-        quantity: props.updatedFood?.quantity ?? 0, 
-        unit: props.updatedFood?.unit ?? '', 
-        foodGroup: props.updatedFood?.foodGroup ?? null, 
-        calories: props.updatedFood?.calories ?? null, 
-        imageFileName: props.updatedFood?.imageFileName ?? null
+    const [food, setFood] = useState( props.op === 'update' ? props.updatedFood :
+       { name: '', 
+        description: '',
+        quantity: 0, 
+        unit: '', 
+        foodGroup: null, 
+        calories:  null, 
+        imageFileName: null
     })
 
     const [foodImage, setFoodImage] = useState({
