@@ -27,12 +27,8 @@ const db = mysql.createPool({
 app.use(express.static('/client/public'))
 
 
-app.get("/", (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'public', 'index.html'));
-})
-
-app.get("/api", (req, res) => {
-    res.json({ message: 'Hello from the server!' })
+app.get("/*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
 })
 
 const storage = multer.diskStorage({
