@@ -124,16 +124,12 @@ app.delete('/api/food', (req, res) => {
 })
 
 
-app.get("*", (req, res) => {
-    if (NODE_ENV === 'production') {
-        console.log('this is production')
-        res.send(path.resolve(__dirname, './client/build', 'index.html'))
-    }
-    else {
-        res.sendFile(path.resolve(__dirname, './client/public', 'index.html'));
-    }
-})
-
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(__dirname + "/client/build"));
+    app.get("*", function(req, res) {
+      res.sendFile(path.join(__dirname + "/client/build/index.html"));
+    });
+  }
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
