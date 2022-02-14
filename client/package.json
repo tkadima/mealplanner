@@ -57,5 +57,5 @@
       "!src/index.js"
     ]
   },
-  "proxy": "http://localhost:3001/api"
+  "proxy": "http://localhost:3001"
 }

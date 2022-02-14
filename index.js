@@ -23,14 +23,6 @@ const db = mysql.createPool({
 
 app.use(express.static(path.resolve(__dirname, "./client/public")));
 
-//onsole.log('dirname: ', __dirname)
-app.use(express.static('/client/public'))
-
-
-// app.get("*", (req, res) => {
-//     // res.sendFile(path.resolve(__dirname, './client/public', 'index.html'));
-// })
-
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './uploads/images');
@@ -61,7 +53,7 @@ app.post('/api/food/new', upload.single('imageFile'), (req, res) => {
         unit: req.body.unit,
         foodGroup: req.body.group, 
         calories: req.body.calories,
-        imageFile: req.file
+        imageFileName: req.file.name
     } 
     let sql = "INSERT INTO food SET ?"
     let query = db.query(sql, food, (err) => {
@@ -71,11 +63,13 @@ app.post('/api/food/new', upload.single('imageFile'), (req, res) => {
 })
 
 app.get('/api/food/', (req, res) => {
+    console.log("Do we even reach here")
     db.query("SELECT * FROM food", (err, result) => {
         if (err) {
             console.log(err)
         }
-        else{
+        else {
+            console.log('result', result)
             res.send(result)
         }
     })
@@ -128,6 +122,12 @@ app.delete('/api/food', (req, res) => {
         }
     )
 })
+
+
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, './client/public', 'index.html'));
+})
+
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)

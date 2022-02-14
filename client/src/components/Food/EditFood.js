@@ -13,7 +13,7 @@ const EditFood = (props) => {
     const getFoodById = useCallback((foodId) => {
         var foodToUpdate =  props.foodList.find(f => f.id === parseInt(foodId))
         setFood(foodToUpdate)
-    })
+    }, [props.foodList])
 
     useEffect(() => {
         getFoodById(id)
