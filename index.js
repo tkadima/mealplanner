@@ -125,7 +125,12 @@ app.delete('/api/food', (req, res) => {
 
 
 app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, './client/public', 'index.html'));
+    if (NODE_ENV === 'production') {
+        res.send(path.resolve(__dirname, './client/build', 'index.html'))
+    }
+    else {
+        res.sendFile(path.resolve(__dirname, './client/public', 'index.html'));
+    }
 })
 
 
