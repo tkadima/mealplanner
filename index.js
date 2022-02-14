@@ -126,6 +126,7 @@ app.delete('/api/food', (req, res) => {
 
 app.get("*", (req, res) => {
     if (NODE_ENV === 'production') {
+        console.log('this is production')
         res.send(path.resolve(__dirname, './client/build', 'index.html'))
     }
     else {
