@@ -13,6 +13,7 @@ app.use(bodyParser.json())
 app.use(express.json())
 app.use(cors())
 app.use(express.static('uploads/images'));
+app.use(express.static('public'))
 
 const db = mysql.createPool({
     host: process.env.DB_HOST,
@@ -122,14 +123,6 @@ app.delete('/api/food', (req, res) => {
         }
     )
 })
-
-
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static(__dirname + "/client/build"));
-    app.get("*", function(req, res) {
-      res.sendFile(path.join(__dirname + "/client/build/index.html"));
-    });
-  }
 
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
