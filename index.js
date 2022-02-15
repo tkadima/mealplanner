@@ -12,8 +12,8 @@ const PORT = process.env.PORT || 3001
 app.use(bodyParser.json())
 app.use(express.json())
 app.use(cors())
+app.use(express.static(path.resolve(__dirname, "./client/build")));
 app.use(express.static('uploads/images'));
-app.use(express.static('public'))
 
 const db = mysql.createPool({
     host: process.env.DB_HOST,
@@ -21,8 +21,6 @@ const db = mysql.createPool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB,
 })
-
-app.use(express.static(path.resolve(__dirname, "./client/public")));
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
