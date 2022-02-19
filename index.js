@@ -5,6 +5,7 @@ const mysql = require('mysql2')
 require('dotenv').config()
 const multer  = require('multer')
 const path = require('path')
+const config = require('./config')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -23,13 +24,7 @@ if (process.env.NODE_ENV == "production") {
     });
   }
 
-
-const db = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB,
-})
+const db = mysql.createPool(config)
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
