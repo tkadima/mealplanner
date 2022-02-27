@@ -23,8 +23,6 @@ if (process.env.NODE_ENV == "production") {
     });
   }
 
-const db = mysql.createPool(config)
-
 var router = require('./routes')();
 app.use('/api', router);
 

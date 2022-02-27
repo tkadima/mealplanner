@@ -1,4 +1,3 @@
-'use strict'
 require('dotenv').config()
 
 let requiredVariables = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB', 'PORT']
