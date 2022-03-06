@@ -1,32 +1,9 @@
 const config = require('../config')
-const multer  = require('multer')
 const mysql = require('mysql2')
-
+const upload = require('../upload')
 
 module.exports = (router) => {   
     const db = mysql.createPool(config)
-
-    const storage = multer.diskStorage({
-        destination: (req, file, cb) => {
-            cb(null, './uploads/images');
-        },
-        filename: (req, file, cb) => {
-            const fileName = file.originalname.toLowerCase().split(' ').join('-')
-            cb(null, "IMAGE-" + Date.now() + '-' + fileName)
-        }
-    })
-
-    const upload = multer({ 
-        storage: storage,
-        fileFilter: (req, file, cb) => {
-            if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-                cb(null, true);
-            } else {
-                cb(null, false);
-                return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-            }
-        }
-    })
 
     router.get('/food/', (req, res) => {
         db.query("SELECT * FROM food", (err, result) => {
