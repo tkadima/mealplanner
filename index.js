@@ -1,10 +1,8 @@
 const bodyParser = require('body-parser')
 const express = require('express')
 const cors = require('cors')
-const mysql = require('mysql2')
 require('dotenv').config()
 const path = require('path')
-const config = require('./config')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -21,7 +19,10 @@ if (process.env.NODE_ENV == "production") {
     app.get("*", (req, res) => {
       res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
     });
-  }
+}
+
+const db = require('./models')
+db.sequelize.sync()
 
 var router = require('./routes')();
 app.use('/api', router);

@@ -1,19 +1,24 @@
 const config = require('../config')
 const mysql = require('mysql2')
 const upload = require('../upload')
+const Food = require('./food.model')
 
 module.exports = (router) => {   
-    const db = mysql.createPool(config)
+    const db = require('../models')
 
-    router.get('/food/', (req, res) => {
-        db.query("SELECT * FROM food", (err, result) => {
-            if (err) {
-                console.log(err)
-            }
-            else {
-                res.send(result)
-            }
+    const Food = db.Food
+    router.get('/food', (req, res) => {
+        Food.findAll()
+        .then(data => {
+            res.send(data)
         })
+        .catch(err => {
+            console.error(err)
+            res.status(500).send({
+                message: err.message || 'Internal error occurred while retrieving fridge items'
+            })
+        })
+    
     })
 
     router.post('/food/new', upload.single('imageFile'), (req, res) => {
@@ -36,7 +41,7 @@ module.exports = (router) => {
 
 
     router.put('/food/', upload.single('imageFile'), (req, res) => {
-            const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageFileName = ? WHERE id = ?"
+        const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageFileName = ? WHERE id = ?"
         db.query(
             query, 
             [req.body.name, req.body.description, req.body.quantity, req.body.unit, 
