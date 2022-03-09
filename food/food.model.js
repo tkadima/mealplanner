@@ -6,12 +6,13 @@ module.exports = (sequelize, Sequelize) => {
     //     },
     //     foodId: Sequelize.INTEGER,
     //     fileSource: Sequelize.STRING
-    // })
+    // }
 
     let Food = sequelize.define('Food', {
         id : {
             type: Sequelize.INTEGER, 
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         name:  Sequelize.STRING,
         description:  Sequelize.STRING,

@@ -1,5 +1,5 @@
 const config = require('./config')
-const Sequelize = require("sequelize");
+const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize(
     config.database, 
@@ -14,10 +14,10 @@ const sequelize = new Sequelize(
     }
 )
 
-const db = {}
+const model = {}
 
-db.Sequelize = Sequelize
-db.sequelize= sequelize
-db.Food =  require('./food/food.model')(sequelize, Sequelize)
+model.Sequelize = Sequelize
+model.sequelize= sequelize
+model.Food =  require('./food/food.model')(sequelize, Sequelize)
 
-module.exports = db
+module.exports = model

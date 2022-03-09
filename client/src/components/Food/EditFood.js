@@ -21,11 +21,11 @@ const EditFood = (props) => {
 
     const handleOnSubmit = (updatedFood, updatedImage) => {
         let formData = new FormData()
-        console.log('updated', updatedFood)
         for ( var property in updatedFood) {
             formData.append(property, updatedFood[property]);
         }
 
+        formData.append('id', id)
         formData.append('imageFile', updatedImage.file)
 
         const config = {
@@ -36,17 +36,14 @@ const EditFood = (props) => {
 
         axios.put('http://localhost:3001/api/food/', formData, config)
         .then(res => {
-
             let emptyValues = ['0', 'null']
             for (var property in food) {
-                console.log('value to parse', res.data[property])
                 if (res.data[property] && !emptyValues.includes(res.data[property])) {
                     food[property] = res.data[property]
                 }
             }
-        })
-        .then(res => {
             history.push('/fridge')
+
         })
         .catch(error => {
             console.log(error)

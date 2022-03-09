@@ -2,11 +2,12 @@ const config = require('../config')
 const mysql = require('mysql2')
 const upload = require('../upload')
 const Food = require('./food.model')
+const { Exception } = require('sass')
 
 module.exports = (router) => {   
-    const db = require('../models')
+    const model = require('../models')
 
-    const Food = db.Food
+    const Food = model.Food
     router.get('/food', (req, res) => {
         Food.findAll()
         .then(data => {
@@ -29,52 +30,61 @@ module.exports = (router) => {
             unit: req.body.unit,
             foodGroup: req.body.group, 
             calories: req.body.calories,
-            imageFileName: req.file.name
-        } 
-        let sql = "INSERT INTO food SET ?"
-        let query = db.query(sql, food, (err) => {
-            if (err) throw err
-            res.send({food, file: req.file})
-        })
+            foodImageId: req.file.name
+        }
+        
+        Food.create(food)
+            .then(data => {
+                res.send(data)
+            })
+            .catch(e => {
+                res.status(500).send({
+                    message: e.message || 'An error occurred while creating the fridge item'
+                })
+            })
     })
 
 
 
     router.put('/food/', upload.single('imageFile'), (req, res) => {
-        const query ="UPDATE food SET name = ?, description = ?, quantity = ?, unit = ?, foodGroup = ?, calories = ?, imageFileName = ? WHERE id = ?"
-        db.query(
-            query, 
-            [req.body.name, req.body.description, req.body.quantity, req.body.unit, 
-                req.body.foodGroup, req.body.calories, req.file.filename, req.body.id],
-            (err, result) => {
-                if (err) {
-                    console.log(err)
-                }
-                else {
-                    res.setHeader('Content-Type', 'application/json')
-                    let responseBody = {...req.body, imageFileName: req.file.filename}
-                    res.status(200).send(responseBody)
-                }
-            }
-        )
+        let updateValues = req.body 
+        let foodId = req.body.id
+
+        Food.update(updateValues, { where: { id: foodId } })
+            .then(result => {
+                res.setHeader('Content-Type', 'application/json')
+                res.status(200).send(req.body)
+
+            })
+            .catch(e => {
+                res.status(500).send({
+                    message: e.message || `An error occurred when updating the fridge item with the id ${foodId}`
+                })
+            })
     })
 
     router.delete('/food/:id', (req, res) => {
-        db.query(
-            'DELETE FROM food WHERE id = ?', 
-            req.params.id, 
-            (err, result) => {
-                if (err) {
-                    console.log(err)
-                } else {
-                    res.send(result)
-                }
-            }
-        )
+        let foodId = req.params.id 
+
+        Food.destroy({ 
+            where: {id: foodId }
+        })
+        .then(result => {
+            console.log(result)
+            res.send({
+                message: `Food with id ${foodId} was deleted successfully!`
+            })
+        })
+        .catch(e => {
+            res.status(500).send({
+                message: e.message || `An error occurred when trying to delete fridge item with id ${foodId}`
+            })
+        })
+
     })
     
-    router.delete('/api/food', (req, res) => {
-        db.query(
+    router.delete('/food', (req, res) => {
+       /* db.query(
             'DELETE FROM food',
             (err, result) => {
                 if(err){
@@ -83,6 +93,21 @@ module.exports = (router) => {
                     res.send(result)
                 }
             }
-        )
-})
+        )*/ 
+
+        Food.destroy({ 
+            where: {  }
+        })
+        .then(result => {
+            console.log(result)
+            res.send({
+                message: 'Successfully deleted all food'
+            })
+        })
+        .catch(e => {
+            res.status(500).send({
+                message: e.message || 'An error occurred when deleting all fridge items'
+            })
+        })
+    }) 
 }

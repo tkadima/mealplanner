@@ -22,7 +22,7 @@ const CreateFood = (props) => {
             }
         })
         .then(response => {
-            props.setFoodList([...props.foodList, response.data.food])
+            props.setFoodList([...props.foodList, response.data])
         })
         .then(res => {
             history.push('/fridge')
