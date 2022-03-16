@@ -1,8 +1,4 @@
-const config = require('../config')
-const mysql = require('mysql2')
 const upload = require('../upload')
-const Food = require('./food.model')
-const { Exception } = require('sass')
 
 module.exports = (router) => {   
     const model = require('../models')
@@ -30,7 +26,7 @@ module.exports = (router) => {
             unit: req.body.unit,
             foodGroup: req.body.group, 
             calories: req.body.calories,
-            foodImageId: req.file.name
+            //foodImageId: req.file.name
         }
         
         Food.create(food)
@@ -84,16 +80,6 @@ module.exports = (router) => {
     })
     
     router.delete('/food', (req, res) => {
-       /* db.query(
-            'DELETE FROM food',
-            (err, result) => {
-                if(err){
-                    console.log(err)
-                }else {
-                    res.send(result)
-                }
-            }
-        )*/ 
 
         Food.destroy({ 
             where: {  }

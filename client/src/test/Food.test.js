@@ -1,87 +1,32 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import Food from '../components/Food'
+import Food from '../components/Food/Food'
 
-test('editting food should change display', () => {
-    let wrapper = shallow(<Food></Food>)
-    let editBtn = wrapper.find({name : 'pencil'})
+test('should correctly display food card color', () => {
+    const dairy = shallow(<Food {...{foodGroup: 'dairy'}}/>)
+    const fruit = shallow(<Food {...{foodGroup: 'fruit'}}/>)
+    const grain = shallow(<Food {...{foodGroup: 'grain'}}/>)
+    const other = shallow(<Food {...{foodGroup: 'other'}}/>)
+    const protein = shallow(<Food {...{foodGroup: 'protein'}}/>)
+    const vegetable = shallow(<Food {...{foodGroup: 'vegetable'}}/>)
 
-    expect(wrapper.find('.food-card-header')).toHaveLength(1)
-    expect(wrapper.find('.food-card-description')).toHaveLength(1)
-    expect(wrapper.find({name: 'trash'})).toHaveLength(1)
-    expect(wrapper.find({name: 'name'})).toHaveLength(0)
-    expect(wrapper.find({name: 'description'})).toHaveLength(0)
-    expect(wrapper.find({name: 'save'})).toHaveLength(0)
-
-    editBtn.simulate('click')
-
-    expect(wrapper.find('.food-card-header')).toHaveLength(0)
-    expect(wrapper.find('.food-card-description')).toHaveLength(0)
-    expect(wrapper.find({name: 'trash'})).toHaveLength(0)
-    expect(wrapper.find({name: 'name'})).toHaveLength(1)
-    expect(wrapper.find({name: 'description'})).toHaveLength(1)
-    expect(wrapper.find({name: 'save'})).toHaveLength(1)
+    expect(dairy.find('Card').prop('color')).toEqual('blue')
+    expect(fruit.find('Card').prop('color')).toEqual('red')
+    expect(grain.find('Card').prop('color')).toEqual('orange')
+    expect(other.find('Card').prop('color')).toEqual('grey')
+    expect(protein.find('Card').prop('color')).toEqual('purple')
+    expect(vegetable.find('Card').prop('color')).toEqual('green')
 })
 
-test('editting food changes text values', () => {
-    let wrapper = shallow(<Food></Food>)
-    let editBtn = wrapper.find({name : 'pencil'})
-    let nameInput;
-    let descriptionInput;
-    let saveBtn;
-
-    editBtn.simulate('click')
-    nameInput = wrapper.find({name: 'name'})
-    descriptionInput = wrapper.find({name: 'description'})
-
-    nameInput.simulate('change', {
-        currentTarget: {
-          name: 'name' 
-        },
-        target: {
-            value: 'Apple'
-        }
-    })
-
-    descriptionInput.simulate('change', {
-        currentTarget: {
-            name: 'description'
-        },
-        target: {
-            value: 'One a day keeps the doctor away'
-        }
-    })
-
-    saveBtn = wrapper.find({name: 'save'})
-
-    saveBtn.simulate('click')
-
-    expect(wrapper.find('.food-card-header').render().text()).toEqual('Apple')
-    expect(wrapper.find('.food-card-description').render().text()).toEqual('One a day keeps the doctor away')
+test('delete button should delete food', () => {
+    const wrapper = shallow(<Food {...{onDelete: jest.fn()}}/>)
+    let deleteBtn = wrapper.find('.food__button--delete')
+    deleteBtn.simulate('click')
+    expect(wrapper).toEqual({})
 })
 
-test('uploading image should save image', () => {
-    let wrapper = shallow(<Food></Food>)
-    let editBtn = wrapper.find({name : 'pencil'})
-    let image = wrapper.find('Image')
-
-    expect(image.prop('src')).toEqual("https://react.semantic-ui.com/images/wireframe/image.png")
-
-    editBtn.simulate('click')
-
-    let fileInput = wrapper.find({type: 'file'})
-    global.URL.createObjectURL = jest.fn();
-
-
-    fileInput.simulate('change', {
-        target: {
-            files: ['file.jpg']
-        }
-    })
-    let saveBtn = wrapper.find({name: 'save'})
-    saveBtn.simulate('click')
-
-    console.log(wrapper.debug())
-
+test('clicking edit should direct to EditFood', () => {
+    const wrapper = shallow(<Food {...{foodId: 1}}/>)
+    expect(wrapper.find('Link').prop('to')).toEqual('/fridge/update/1')
 })

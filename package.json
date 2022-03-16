@@ -29,5 +29,8 @@
   },
   "engines": {
     "node": "16.13.1"
+  },
+  "devDependencies": {
+    "supertest": "^6.2.2"
   }
 }

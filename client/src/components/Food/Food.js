@@ -11,16 +11,15 @@ const Food = (props) => {
         }
     }
 
-        let colorDict = {
-            'dairy': 'blue', 
-            'fruit': 'red',
-            'grain': 'orange',
-            'protein': 'purple',
-            'other': 'grey',
-            'vegetable': 'green'
+    let colorDict = {
+        'dairy': 'blue', 
+        'fruit': 'red',
+        'grain': 'orange',
+        'protein': 'purple',
+        'other': 'grey',
+        'vegetable': 'green'
 
-        }
-    
+    }
 
     return (
         <Card className='food' color={colorDict[props.foodGroup]}>
@@ -31,9 +30,9 @@ const Food = (props) => {
             </Card.Content>
             <Card.Content extra className='food__actions'>
                 <Link to={`/fridge/update/${props.foodId}`}>
-                    <Button basic color='green'>Edit</Button>
+                    <Button basic color='green' className='food__button--edit'>Edit</Button>
                 </Link>
-                <Button basic color='red' onClick={() => props.onDelete(props.foodId)}>Delete</Button>
+                <Button basic color='red' className='food__button--delete'onClick={() => props.onDelete(props.foodId)}>Delete</Button>
             </Card.Content> 
         </Card>
     )
