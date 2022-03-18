@@ -78,7 +78,8 @@ const FoodForm = (props) => {
                         <Grid.Column width={8}>
                             <Form.Input 
                                 label='Name'
-                                defaultValue={food.name } 
+                                name='name'
+                                defaultValue={food.name} 
                                 control={Input} 
                                 placeholder='Enter name of food' 
                                 className='food-form__input--text'
@@ -86,6 +87,7 @@ const FoodForm = (props) => {
                             />
                             <Form.Input 
                                 label='Description' 
+                                name='description'
                                 defaultValue={props.updatedFood?.description} 
                                 control={TextArea} 
                                 placeholder='Briefly describe the ingredient' 
@@ -191,7 +193,7 @@ const FoodForm = (props) => {
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-                <Button color='blue' type='submit'>Submit</Button>
+                <Button className='food-form__btn--submit' color='blue' type='submit'>Submit</Button>
                 <Link to='/fridge'>
                     <Button color='red'>Cancel</Button>
                 </Link>
