@@ -8,6 +8,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "bootstrap": "^5.0.2",
+    "form-data": "^4.0.0",
     "lodash": "^4.17.21",
     "parse-ingredient": "^0.3.0",
     "react": "^17.0.2",

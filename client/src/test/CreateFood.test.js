@@ -24,6 +24,13 @@ describe('creating new food ', () => {
 
     const formWrapper = wrapper.find('FoodForm')
 
+    const entries = jest.fn()
+    const append = jest.fn()
+
+    global.FormData = () => ({ entries, append })
+
+    console.log('formdata', global.FormData)
+
     it('should set food values', () => {
         const apple = {
             name: 'apple',
@@ -50,13 +57,9 @@ describe('creating new food ', () => {
 
             })
         }
-
-        //let btn = formWrapper.find('Button.food-form__btn--submit')
-        //btn.simulate('click')
-       
-        formWrapper.simulate('submit')
-
-        expect(formProps.handleOnSubmit).toHaveBeenCalled(1)
+        let btn = formWrapper.find('Button.food-form__btn--submit') 
+        btn.simulate('click')
+       // expect(createFoodProps.foodList.length).toEqual(1)
     })
     
 })

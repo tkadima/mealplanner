@@ -9,8 +9,10 @@ const CreateFood = (props) => {
 
     const handleOnSubmit = (food, foodImage) => {
         let formData = new FormData()
+        console.log('created formdata')
 
         for(let property in food) {
+            console.log(property, food[property])
             formData.append(property, food[property])
         }
 

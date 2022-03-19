@@ -96,11 +96,12 @@ const FoodForm = (props) => {
                             />
                         </Grid.Column>
                         <Grid.Column width={4}>
-                            <Image className="food-image_preview"
+                            <Image className='food-image_preview'
                                 size='small' 
                                 src={displayImage()}
                                 ui={false} 
                                 alt='Upload image'
+                                defaultValue=''
                             />
 
                             <Input 
