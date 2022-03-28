@@ -1,12 +1,12 @@
 module.exports = (sequelize, Sequelize) => {
-    // const FoodImage = sequelize.define('FoodImage', {
-    //     id: {
-    //         type: Sequelize.INTEGER,
-    //         primaryKey: true
-    //     },
-    //     foodId: Sequelize.INTEGER,
-    //     fileSource: Sequelize.STRING
-    // }
+    let FoodImage = sequelize.define('FoodImage', {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true
+        },
+        foodId: Sequelize.INTEGER,
+        fileSource: Sequelize.STRING
+    })
 
     let Food = sequelize.define('Food', {
         id : {

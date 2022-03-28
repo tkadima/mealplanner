@@ -19,6 +19,7 @@ module.exports = (router) => {
     })
 
     router.post('/food/new', upload.single('imageFile'), (req, res) => {
+        console.log('file', req.file)
         let food = { 
             name: req.body.name,
             description: req.body.description, 
@@ -26,7 +27,7 @@ module.exports = (router) => {
             unit: req.body.unit,
             foodGroup: req.body.group, 
             calories: req.body.calories,
-            //foodImageId: req.file.name
+            foodImageId: req.file.name
         }
         
         Food.create(food)
@@ -80,7 +81,6 @@ module.exports = (router) => {
     })
     
     router.delete('/food', (req, res) => {
-
         Food.destroy({ 
             where: {  }
         })

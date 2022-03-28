@@ -78,8 +78,7 @@ const FoodForm = (props) => {
                         <Grid.Column width={8}>
                             <Form.Input 
                                 label='Name'
-                                name='name'
-                                defaultValue={food.name} 
+                                defaultValue={props.updatedFood?.name} 
                                 control={Input} 
                                 placeholder='Enter name of food' 
                                 className='food-form__input--text'
