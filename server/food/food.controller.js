@@ -10,7 +10,6 @@ exports.create = (req, res) => {
         unit: req.body.unit,
         foodGroup: req.body.group, 
         calories: req.body.calories,
-        foodImageId: req.file.name
     }
 
     Food.create(food)

@@ -1,3 +1,5 @@
+const model = require('../models')
+
 module.exports = (sequelize, Sequelize) => {
     let FoodImage = sequelize.define('FoodImage', {
         id: {
@@ -7,6 +9,5 @@ module.exports = (sequelize, Sequelize) => {
         foodId: Sequelize.INTEGER,
         fileSource: Sequelize.STRING
     })
-
     return FoodImage
 }

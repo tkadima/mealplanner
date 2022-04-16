@@ -42,10 +42,10 @@ const Fridge = (props) => {
       <h1 className='fridge__header'>
         Welcome to the Fridge
       </h1>
-      <div className='fridge__plus-button-container'>
+      <div className='fridge__button--add'>
         <Link to='/fridge/new'>
           <Icon 
-              className='fridge__plus-button' 
+              className='fridge__icon--add' 
               color='teal' 
               name='plus circle' 
               size='large' 
@@ -66,7 +66,7 @@ const Fridge = (props) => {
         })
       }
       </Card.Group>
-      <div>
+      <div className='fridge__button--clear'>
         <Button onClick={handleDeleteAll} disabled={props.foodList.length === 0}>Clear Fridge</Button>
       </div>
     </div>

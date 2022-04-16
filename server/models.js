@@ -19,6 +19,6 @@ const model = {}
 model.Sequelize = Sequelize
 model.sequelize= sequelize
 model.Food =  require('./food/food.model')(sequelize, Sequelize)
-model.FoodImage = require('./foodImage/foodImage.model', Sequelize)
+model.FoodImage = require('./foodImage/foodImage.model')(sequelize, Sequelize)
 
 module.exports = model

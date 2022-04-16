@@ -44,9 +44,15 @@
 }
 
 .fridge {
-  &__plus-button-container {
+  &__button--add {
     height: 50px;
   }
+
+  &__button--clear {
+    padding-top: 100px;
+  }
+
+
 }
 
 
