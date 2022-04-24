@@ -10,6 +10,7 @@
     "bootstrap": "^5.0.2",
     "form-data": "^4.0.0",
     "lodash": "^4.17.21",
+    "mdb-react-ui-kit": "^3.0.0",
     "parse-ingredient": "^0.3.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.1",

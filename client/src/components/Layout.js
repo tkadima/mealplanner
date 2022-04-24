@@ -1,24 +1,49 @@
-import { Container, Menu } from 'semantic-ui-react'
+import {
+    MDBNavbar,
+    MDBNavbarNav,
+    MDBNavbarItem,
+    MDBNavbarLink,
+    MDBNavbarToggler,
+    MDBContainer,
+    MDBIcon
+  } from 'mdb-react-ui-kit';
+
 const Layout = ({children}) => {
     return (
-        <div className="layout">
-          <Menu
-            borderless
-            fixed="top"
-            className="layout-navbar">
-                <Container>
-                    <Menu.Item header>Meal Planner </Menu.Item>
-                    <Menu.Item as='a' href="\">Home</Menu.Item>
-                    <Menu.Item as='a' href="\planner">Calendar</Menu.Item>
-                    <Menu.Item as='a' href="\fridge">View Your Fridge</Menu.Item>
-                </Container>
-            </Menu>
-            
-            <div className="layout-content container">
-                {children}
-            </div>
-            
-        </div>
+    <header className="layout">
+        <MDBNavbar expand='lg' light>
+        <MDBContainer fluid>
+          <MDBNavbarToggler
+            aria-controls='navbarExample01'
+            aria-expanded='false'
+            aria-label='Toggle navigation'
+          >
+            <MDBIcon fas icon='bars' />
+          </MDBNavbarToggler>
+          <div className='collapse navbar-collapse' id='navbarExample01'>
+            <MDBNavbarNav right className='mb-2 mb-lg-0'>
+              <MDBNavbarItem active>
+                <MDBNavbarLink href='\'>
+                  Home
+                </MDBNavbarLink>
+              </MDBNavbarItem>
+              <MDBNavbarItem>
+                <MDBNavbarLink href='\planner'>Calendar</MDBNavbarLink>
+              </MDBNavbarItem>
+              <MDBNavbarItem>
+                <MDBNavbarLink href='\fridge'> Fridge</MDBNavbarLink>
+              </MDBNavbarItem>
+              <MDBNavbarItem>
+                <MDBNavbarLink href='\recipes'>Recipe Book</MDBNavbarLink>
+              </MDBNavbarItem>
+            </MDBNavbarNav>
+          </div>
+        </MDBContainer>
+      </MDBNavbar>
+      <div className="layout-content container">
+          {children}
+      </div>
+    </header>
     )
 }
 

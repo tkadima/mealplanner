@@ -38,7 +38,7 @@ const Fridge = (props) => {
   }
 
   return(
-    <div className='fridge fridge__container container'>
+    <div className='fridge fridge__container container bg-light'>
       <h1 className='fridge__header'>
         Welcome to the Fridge
       </h1>
