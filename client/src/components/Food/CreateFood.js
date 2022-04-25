@@ -16,7 +16,7 @@ const CreateFood = (props) => {
 
         formData.append('imageFile', foodImage.file)
 
-        axios.post('http://localhost:3001/api/food/new', formData, {
+        axios.post('http://localhost:3001/api/food/', formData, {
             headers: {
                 'content-type': 'multipart/form-data'
             }

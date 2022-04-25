@@ -40,7 +40,7 @@ const Layout = ({children}) => {
           </div>
         </MDBContainer>
       </MDBNavbar>
-      <div className="layout-content container">
+      <div className="layout-content container bg-light">
           {children}
       </div>
     </header>

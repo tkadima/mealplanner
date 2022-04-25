@@ -1,16 +1,23 @@
-require('dotenv').config()
-
-let requiredVariables = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB', 'PORT']
-
-requiredVariables.forEach((variable) => {
-    if(!process.env[variable]) throw new Error(`Missing env variable ${variable}`)
+const { MongoClient } = require('mongodb')
+const db = process.env.ATLAS_URI
+const client = new MongoClient(db, {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true
 })
 
-const config = {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB
-}
+let _db
 
-module.exports = config
+module.exports = {
+    connectToServer: (callback) => {
+        client.connect((err, db) => {
+            if (db) {
+                _db = db.db('mealPlanner')
+                console.log('Successfully connected to MongoDb!')
+                return callback(err)
+            }
+        })
+    }, 
+    getDb: () => {
+        return _db
+    }
+}
