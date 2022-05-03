@@ -8,7 +8,6 @@ const FoodSchema = new mongoose.Schema({
     description: String, 
     quantity: {
         type: Number,
-        required: true,
         min: 0
     }, 
     unit: String,
@@ -28,4 +27,6 @@ const FoodSchema = new mongoose.Schema({
     }
 })
 
-module.exports = Food = mongoose.model('Food', FoodSchema)
+const Food = mongoose.model('food', FoodSchema)
+
+module.exports = Food

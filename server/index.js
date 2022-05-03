@@ -24,16 +24,17 @@ if (process.env.NODE_ENV == "production") {
     });
 }
 
+const connection = require('./config')
 
-var appRoutes = require('./routes')
-app.use('/', appRoutes)
+//var appRoutes = require('./routes')();
+//app.use('/api', appRoutes)
 
-const db = require('./config')
+const foodRouter = require('./food/food.routes')
 
+app.use('/api', foodRouter)
 
 app.listen(PORT, () => {
-    db.connectToServer((err) =>  {
-      if (err) console.error(err)
-    })
-    console.log(`Server listening on port ${PORT}`)
+  connection.once('open', () => {
+    console.log("MongoDB database connection established successfully");
+  })
 })

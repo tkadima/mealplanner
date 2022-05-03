@@ -2,7 +2,7 @@ const multer  = require('multer')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, './uploads/images');
+        cb(null, '../meal-planner-app/uploads/images');
     },
     filename: (req, file, cb) => {
         const fileName = file.originalname.toLowerCase().split(' ').join('-')

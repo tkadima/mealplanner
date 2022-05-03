@@ -1,23 +1,9 @@
-const { MongoClient } = require('mongodb')
-const db = process.env.ATLAS_URI
-const client = new MongoClient(db, {
-    useNewUrlParser: true, 
-    useUnifiedTopology: true
-})
+const { mongoose } = require('mongoose') 
 
-let _db
+const uri = process.env.ATLAS_URI
 
-module.exports = {
-    connectToServer: (callback) => {
-        client.connect((err, db) => {
-            if (db) {
-                _db = db.db('mealPlanner')
-                console.log('Successfully connected to MongoDb!')
-                return callback(err)
-            }
-        })
-    }, 
-    getDb: () => {
-        return _db
-    }
-}
+mongoose.connect(uri, { useNewUrlParser: true })
+
+const connection = mongoose.connection
+
+module.exports = connection 
