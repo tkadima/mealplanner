@@ -1,5 +1,4 @@
 import axios from 'axios'
-import * as FormData from 'form-data'
 import { useHistory } from "react-router-dom";
 
 import FoodForm from './FoodForm'
@@ -7,21 +6,20 @@ import FoodForm from './FoodForm'
 const CreateFood = (props) => {
     let history = useHistory(); 
 
-    const handleOnSubmit = (food, foodImage) => {
-        let formData = new FormData()
+    const handleOnSubmit = (food) => {
+        let formData = {}
 
         for(let property in food) {
-            formData.append(property, food[property])
+            formData[property] = food[property]
         }
-
-        formData.append('imageFile', foodImage.file)
 
         axios.post('http://localhost:3001/api/food/', formData, {
             headers: {
-                'content-type': 'multipart/form-data'
+                'content-type': 'application/json'
             }
         })
         .then(response => {
+            console.log('food response', response)
             props.setFoodList([...props.foodList, response.data])
         })
         .then(res => {

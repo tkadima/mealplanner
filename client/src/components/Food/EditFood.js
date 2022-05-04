@@ -11,7 +11,10 @@ const EditFood = (props) => {
     const [food, setFood] = useState()
 
     const getFoodById = useCallback((foodId) => {
-        var foodToUpdate =  props.foodList.find(f => f.id === parseInt(foodId))
+        var foodToUpdate =  props.foodList.find(f => f._id === foodId)
+        if (foodToUpdate == null) {
+            throw(`Error: could not find food with id ${id}`)
+        } 
         setFood(foodToUpdate)
     }, [props.foodList])
 
@@ -19,22 +22,22 @@ const EditFood = (props) => {
         getFoodById(id)
     }, [id, getFoodById])
 
-    const handleOnSubmit = (updatedFood, updatedImage) => {
-        let formData = new FormData()
+    const handleOnSubmit = (updatedFood) => {
+        let formData = {}
+
         for ( var property in updatedFood) {
-            formData.append(property, updatedFood[property]);
+            formData[property] = updatedFood[property]
         }
 
-        formData.append('id', id)
-        formData.append('imageFile', updatedImage.file)
+        formData['id'] = id
 
         const config = {
             headers: {
-                'content-type': 'multipart/form-data'
+                'content-type': 'application/json'
             }
         };
 
-        axios.put('http://localhost:3001/api/food/', formData, config)
+        axios.put('http://localhost:3001/api/food/' + id, formData, config)
         .then(res => {
             let emptyValues = ['0', 'null']
             for (var property in food) {
@@ -42,8 +45,8 @@ const EditFood = (props) => {
                     food[property] = res.data[property]
                 }
             }
+            // todo: why do I have to refresh to see changes in fridge? 
             history.push('/fridge')
-
         })
         .catch(error => {
             console.log(error)

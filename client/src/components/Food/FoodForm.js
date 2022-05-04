@@ -72,7 +72,7 @@ const FoodForm = (props) => {
         }
     }
     return (
-        <Form className='food-form' onSubmit={() => props.handleOnSubmit(food, foodImage)} encType='multipart/form'>
+        <Form className='food-form' onSubmit={() => props.handleOnSubmit(food, foodImage)}>
                 <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column width={8}>

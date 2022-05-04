@@ -1,4 +1,4 @@
-const upload = require('../../upload')
+const upload = require('../upload')
 const path = require('path')
 const express = require('express')
 var fs = require('fs');
@@ -20,38 +20,25 @@ router.get('/food', (req, res) => {
 // @route: POST api/food 
 // @description: add and save new food 
 // @access: Public 
-router.post('/food', upload.single('imageFile'), (req, res, next) => {
-    console.log('dirname', __dirname)
-    var food = {
+router.post('/food', (req, res) => {
+    var food = new Food({
         name: req.body.name, 
         description: req.body.description, 
         quantity: req.body.quantity, 
         unit: req.body.unit,
         foodGroup: req.body.group, 
         calories: req.body.calories,
-        foodImage: {
-            filename: req.file.filename,
-            img: {
-                data: fs.readFileSync(path.join(__dirname + '/uploads/images/' + req.file.filename)),
-                contentType: 'image'
-            }
-        }
-    }
-    console.log('food', food)
-
-    Food.create(food, (err, item) => {
-        if (err) console.log(error)
-        else {
-            res.redirect('/')
-        }
     })
+    Food.create(food)
+        .then(f => res.json({msg: 'Food added'}))
+        .catch(err => res.status(400).json({ error: 'Unable to add this food' }));
 })
 
 // @route: PUT api/food/:id
 // @description: update food with given id 
 // @access: Public 
 
-router.put('/food/:id', upload.single('imageFile'), (req, res, next) => {
+router.put('/food/:id', (req, res) => {
     console.log("updating existing food id ", req.params.id)
     // update file if statement 
     Food.findByIdAndUpdate(req.params.id, req.body)
