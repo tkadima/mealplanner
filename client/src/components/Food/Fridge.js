@@ -10,7 +10,7 @@ import Food from './Food'
 const Fridge = (props) => {
   const handleOnDelete = (id) => {
     let deletedFood = props.foodList.find(item => {
-      return item.id === id
+      return item._id === id
     })
 
     let confirmed = window.confirm(`Are you sure you want to delete ${deletedFood.name} from the fridge?`) 
@@ -18,7 +18,7 @@ const Fridge = (props) => {
       axios.delete(`http://localhost:3001/api/food/${id}`)
       .then(res => {
         props.setFoodList(props.foodList.filter(item => {
-          return item.id !== id
+          return item._id !== id
         }))
       })
       .catch(err => {
