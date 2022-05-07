@@ -1,5 +1,3 @@
-const upload = require('../upload')
-const path = require('path')
 const express = require('express')
 var fs = require('fs');
 
@@ -69,7 +67,7 @@ router.delete('/food/:id', (req, res) => {
 // @description: delete all food 
 // @access: Public 
 router.delete('/food', (req, res) => {
-    Food.remove({})
+    Food.deleteMany()
         .then(food =>  res.json({ message: 'All food deleted'}))
         .catch(err => res.status(400).json({error: err}))
 })
