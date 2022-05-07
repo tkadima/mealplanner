@@ -40,12 +40,16 @@ const EditFood = (props) => {
         axios.put('http://localhost:3001/api/food/' + id, formData, config)
         .then(res => {
             let emptyValues = ['0', 'null']
-            for (var property in food) {
-                if (res.data[property] && !emptyValues.includes(res.data[property])) {
-                    food[property] = res.data[property]
-                }
-            }
-            // todo: why do I have to refresh to see changes in fridge? 
+            console.log('res data', res.data)
+
+            var updated = props.foodList.map(food => {
+                if(food._id == id) return res.data
+                else return food
+            })
+            console.log(JSON.stringify(updated))
+            props.setFoodList(updated)
+        })
+        .then(res => {
             history.push('/fridge')
         })
         .catch(error => {

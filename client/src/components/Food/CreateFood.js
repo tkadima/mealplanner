@@ -19,7 +19,6 @@ const CreateFood = (props) => {
             }
         })
         .then(response => {
-            console.log('food response', response)
             props.setFoodList([...props.foodList, response.data])
         })
         .then(res => {

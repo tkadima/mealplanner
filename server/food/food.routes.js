@@ -30,7 +30,7 @@ router.post('/food', (req, res) => {
         calories: req.body.calories,
     })
     Food.create(food)
-        .then(f => res.json({msg: 'Food added'}))
+        .then(f => res.json(food))
         .catch(err => res.status(400).json({ error: 'Unable to add this food' }));
 })
 
@@ -39,10 +39,17 @@ router.post('/food', (req, res) => {
 // @access: Public 
 
 router.put('/food/:id', (req, res) => {
-    console.log("updating existing food id ", req.params.id)
-    // update file if statement 
     Food.findByIdAndUpdate(req.params.id, req.body)
-        .then(food => res.json({ msg: 'Updated successfully' }))
+        .then(food => {
+            let patch = req.body
+            let newFood = food 
+            for(let property in patch) {
+                if (property != 'id') {
+                    newFood[property] = patch[property]
+                }
+            }
+            res.json(newFood)
+        })
         .catch(err =>
             res.status(400).json({ error: 'Unable to update the Database', err })
         );
@@ -51,7 +58,7 @@ router.put('/food/:id', (req, res) => {
 // @route: DELETE api/food/:id
 // @description: delete food with given id 
 // @access: Public 
-router.delete('/food/:id', (res, req) => {
+router.delete('/food/:id', (req, res) => {
     console.log("deleting existing food id ", req.params.id)
     Food.findByIdAndRemove(req.params.id, req.body)
         .then(food => res.json({ message: 'Food deleted successfully!'}))
@@ -61,11 +68,10 @@ router.delete('/food/:id', (res, req) => {
 // @route: DELETE api/food/
 // @description: delete all food 
 // @access: Public 
-router.delete('/food', (res, req) => {
-    console.log("deleting all food", req.params.id)
-    Food.remove({}, callback)
+router.delete('/food', (req, res) => {
+    Food.remove({})
         .then(food =>  res.json({ message: 'All food deleted'}))
-        .catch(err => res.status(404).json({ error: err}))
+        .catch(err => res.status(400).json({error: err}))
 })
 
 module.exports = router

@@ -55,7 +55,6 @@ const Fridge = (props) => {
       <Card.Group itemsPerRow={4}>
       {
         props.foodList.map((item, i) => { 
-          console.log('item', item)
             return <Food 
               key={i} 
               foodId={item._id}
