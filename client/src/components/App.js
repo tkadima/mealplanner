@@ -9,6 +9,7 @@ import Layout from './Layout'
 import Fridge from './Food/Fridge';
 import CreateFood from './Food/CreateFood'
 import EditFood from './Food/EditFood'
+import RecipeBook from './Recipes/RecipeBook'
 import './App.scss'
 
  const App = () => {
@@ -46,6 +47,9 @@ import './App.scss'
             </Route>
             <Route path="/fridge/update/:id" >
               <EditFood foodList={data} setFoodList={setData} />
+            </Route>
+            <Route path="/recipes">
+              <RecipeBook />
             </Route>
         </Router>
       </div>

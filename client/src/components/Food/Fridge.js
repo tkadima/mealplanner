@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, Icon } from 'semantic-ui-react'
+import { Card } from 'semantic-ui-react'
+import { MDBIcon, MDBBtn } from 'mdb-react-ui-kit';
 import axios from 'axios';
 
 import '../App.scss'
 import Food from './Food'
-
 
 const Fridge = (props) => {
   const handleOnDelete = (id) => {
@@ -44,12 +44,9 @@ const Fridge = (props) => {
       </h1>
       <div className='fridge__button--add'>
         <Link to='/fridge/new'>
-          <Icon 
-              className='fridge__icon--add' 
-              color='teal' 
-              name='plus circle' 
-              size='large' 
-            />  
+          <MDBBtn floating color='info' >
+            <MDBIcon fas icon='plus' />
+          </MDBBtn>
         </Link>
       </div>
       <Card.Group itemsPerRow={4}>
@@ -67,7 +64,7 @@ const Fridge = (props) => {
       }
       </Card.Group>
       <div className='fridge__button--clear'>
-        <Button onClick={handleDeleteAll} disabled={props.foodList.length === 0}>Clear Fridge</Button>
+        <MDBBtn onClick={handleDeleteAll} disabled={props.foodList.length === 0} color='warning'>Clear Fridge</MDBBtn>
       </div>
     </div>
   )

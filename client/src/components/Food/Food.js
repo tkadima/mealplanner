@@ -1,4 +1,5 @@
-import { Card, Button, Image } from 'semantic-ui-react'
+import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImage, MDBBtn} from 'mdb-react-ui-kit';
+
 import { Link } from 'react-router-dom'
 
 const Food = (props) => {
@@ -12,29 +13,27 @@ const Food = (props) => {
     }
 
     let colorDict = {
-        'dairy': 'blue', 
-        'fruit': 'red',
-        'grain': 'orange',
-        'protein': 'purple',
-        'other': 'grey',
-        'vegetable': 'green'
+        'dairy': 'info', 
+        'fruit': 'danger',
+        'grain': 'warning',
+        'protein': 'secondary',
+        'other': 'dark',
+        'vegetable': 'success'
 
     }
 
     return (
-        <Card className='food' color={colorDict[props.foodGroup]}>
-            <Card.Content>
-                <Image className="food__image"size='small' src={displayImage()}  wrapped />
-                <Card.Header className='food__header'>{props.name}</Card.Header>
-                <Card.Description className='food__description'>{props.description}</Card.Description>
-            </Card.Content>
-            <Card.Content extra className='food__actions'>
+        <MDBCard className='food' border={colorDict[props.foodGroup]}>
+            <MDBCardImage src={displayImage()}  position='top' />
+            <MDBCardBody>
+                <MDBCardTitle>{props.name}</MDBCardTitle>
+                <MDBCardText>{props.description}</MDBCardText>
                 <Link to={`/fridge/update/${props.foodId}`}>
-                    <Button basic color='green' className='food__button--edit'>Edit</Button>
+                    <MDBBtn className='food__button--edit'>Edit</MDBBtn>
                 </Link>
-                <Button basic color='red' className='food__button--delete'onClick={() => props.onDelete(props.foodId)}>Delete</Button>
-            </Card.Content> 
-        </Card>
+                <MDBBtn color='danger' className='food__button--delete'onClick={() => props.onDelete(props.foodId)}>Delete</MDBBtn>
+            </MDBCardBody>
+        </MDBCard>
     )
 }
 export default Food 
