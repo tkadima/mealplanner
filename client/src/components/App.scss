@@ -53,6 +53,9 @@
     }
 }
 
+.food {
+ width: 20%;
+}
 
 .food-form {
   &__image-section {
@@ -68,4 +71,13 @@
 .food__button--edit{
   max-width: 22rem;
   margin: 5px; 
+}
+
+.food-input {
+  width: 30%; 
+}
+
+.food-label {
+  text-align: left;
+  font-size: 15px;
 }

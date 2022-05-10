@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Card } from 'semantic-ui-react'
-import { MDBIcon, MDBBtn } from 'mdb-react-ui-kit';
+import { Button, CardGroup, Container, Row } from 'react-bootstrap'
+
 import axios from 'axios';
 
 import '../App.scss'
@@ -44,27 +44,29 @@ const Fridge = (props) => {
       </h1>
       <div className='fridge__button--add'>
         <Link to='/fridge/new'>
-          <MDBBtn floating color='info' >
-            <MDBIcon fas icon='plus' />
-          </MDBBtn>
+          <Button variant='info' className='rounded-circle' >
+          <i class="fa fa-plus"></i>
+          </Button>
         </Link>
       </div>
-      <Card.Group itemsPerRow={4}>
-      {
-        props.foodList.map((item, i) => { 
-            return <Food 
-              key={i} 
-              foodId={item._id}
-              name={item.name}
-              foodGroup={item.foodGroup}
-              description={item.description} 
-              onDelete={handleOnDelete}
-            />
-        })
-      }
-      </Card.Group>
+      <Container className='p-4'>
+        <Row>
+        {
+          props.foodList.map((item, i) => { 
+              return <Food 
+                key={i} 
+                foodId={item._id}
+                name={item.name}
+                foodGroup={item.foodGroup}
+                description={item.description} 
+                onDelete={handleOnDelete}
+              />
+          })
+        }
+        </Row>
+      </Container>
       <div className='fridge__button--clear'>
-        <MDBBtn onClick={handleDeleteAll} disabled={props.foodList.length === 0} color='warning'>Clear Fridge</MDBBtn>
+        <Button onClick={handleDeleteAll} disabled={props.foodList.length === 0} color='warning'>Clear Fridge</Button>
       </div>
     </div>
   )

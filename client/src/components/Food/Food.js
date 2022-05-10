@@ -1,5 +1,4 @@
-import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImage, MDBBtn} from 'mdb-react-ui-kit';
-
+import { Button, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 const Food = (props) => {
@@ -12,28 +11,18 @@ const Food = (props) => {
         }
     }
 
-    let colorDict = {
-        'dairy': 'info', 
-        'fruit': 'danger',
-        'grain': 'warning',
-        'protein': 'secondary',
-        'other': 'dark',
-        'vegetable': 'success'
-
-    }
-
     return (
-        <MDBCard className='food' border={colorDict[props.foodGroup]}>
-            <MDBCardImage src={displayImage()}  position='top' />
-            <MDBCardBody>
-                <MDBCardTitle>{props.name}</MDBCardTitle>
-                <MDBCardText>{props.description}</MDBCardText>
+        <Card className='food m-2'>
+            <Card.Img src={displayImage()}  position='top' />
+            <Card.Body>
+                <Card.Title>{props.name}</Card.Title>
+                <Card.Text>{props.description}</Card.Text>
                 <Link to={`/fridge/update/${props.foodId}`}>
-                    <MDBBtn className='food__button--edit'>Edit</MDBBtn>
+                    <Button className='food__button--edit'>Edit</Button>
                 </Link>
-                <MDBBtn color='danger' className='food__button--delete'onClick={() => props.onDelete(props.foodId)}>Delete</MDBBtn>
-            </MDBCardBody>
-        </MDBCard>
+                <Button variant='danger' className='food__button--delete'onClick={() => props.onDelete(props.foodId)}>Delete</Button>
+            </Card.Body>
+        </Card>
     )
 }
 export default Food 
