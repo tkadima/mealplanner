@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Button, CardGroup, Container, Row } from 'react-bootstrap'
+import { Button, Container, Row } from 'react-bootstrap'
 
 import axios from 'axios';
 

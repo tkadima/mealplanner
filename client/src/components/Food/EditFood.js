@@ -8,13 +8,16 @@ const EditFood = (props) => {
 
     let history = useHistory(); 
     const { id } = useParams()
-    const [food, setFood] = useState()
+    const [food, setFood] = useState({})
 
     const getFoodById = useCallback((foodId) => {
+        console.log('getting food by id')
+        console.log(JSON.stringify('foodList', props.foodList))
         var foodToUpdate =  props.foodList.find(f => f._id === foodId)
         if (foodToUpdate == null) {
-            throw(`Error: could not find food with id ${id}`)
+            throw(new Error(`Error: could not find food with id ${id}`)) // try-catch instead?
         } 
+        console.log('found food to update')
         setFood(foodToUpdate)
     }, [props.foodList])
 
@@ -39,11 +42,11 @@ const EditFood = (props) => {
 
         axios.put('http://localhost:3001/api/food/' + id, formData, config)
         .then(res => {
-            let emptyValues = ['0', 'null']
+            //let emptyValues = ['0', 'null']
             console.log('res data', res.data)
 
             var updated = props.foodList.map(food => {
-                if(food._id == id) return res.data
+                if(food._id === id) return res.data
                 else return food
             })
             console.log(JSON.stringify(updated))

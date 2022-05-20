@@ -22,6 +22,7 @@ const CreateFood = (props) => {
             props.setFoodList([...props.foodList, response.data])
         })
         .then(res => {
+            //todo: find out why I'm brought back to create page
             history.push('/fridge')
         })
         .catch(error => {

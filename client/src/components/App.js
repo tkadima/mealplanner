@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
-import 'semantic-ui-css/semantic.min.css'
+//import 'semantic-ui-css/semantic.min.css' todo: decide if using 
 
 import Planner from './Planner'
 import Home from './Home'
@@ -22,12 +22,14 @@ import './App.scss'
       const foodList = response.data
       setData(foodList)
     })
+    // todo why is foodlist empty in the newest EditFood component 
+    // but not in other places?
+
   }
 
   useEffect(() => {
     getAllFood()
   }, [])
-
 
   return (
     <Layout>

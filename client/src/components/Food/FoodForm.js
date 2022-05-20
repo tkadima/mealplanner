@@ -1,25 +1,9 @@
 import React, { useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
+import { Button, Form, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import FoodInput from './FoodInput.js'
 
 const FoodForm = (props) => {
-
-    const foodGroupOptions = [
-        {key: 0, value: 'dairy', text: 'Dairy'},
-        {key: 1, value: 'fruit', text: 'Fruit'},
-        {key: 2, value: 'grain', text: 'Grain'},
-        {key: 3, value: 'protein', text: 'Protein'},
-        {key: 4, value: 'vegetable', text: 'Vegetable'}, 
-        {key: 5, value: 'other', text: 'Other'}
-    ]
-    const unitOptions = [
-        {key: 0, value: 'cups', text: 'Cups'},
-        {key: 1, value: 'g', text: 'Grams'},
-        {key: 2, value: 'tbsp', text: 'Tablespoons'},
-        {key: 3, value: 'tsp', text: 'Teaspoons'},
-        {key: 4, value: 'oz', text: 'Ounces'},
-        {key: 5, value: 'lb', text: 'Pound'}
-    ]
 
     const [food, setFood] = useState( props.op === 'update' ? props.updatedFood :
        { name: '', 
@@ -28,132 +12,75 @@ const FoodForm = (props) => {
         unit: '', 
         foodGroup: null, 
         calories:  null, 
-        imageFileName: null
     })
 
-    const [foodImage, setFoodImage] = useState({
-        file: [],
-        imagePreview: null
-    })
-
-    const onSelectChange = (data) => {
-        console.log('data', data.target.name, data.target.value)
-        let property = data.target.name
-        setFood(food => ({
-            ...food,
-            [property]: data.target.value 
+    const handleChange = (property, value) => {
+        setFood(prevFood => ({
+            ...prevFood, 
+            [property]: value
         }))
     }
 
-    const handleChange = (property, value) => {
-        if (property === 'imageFile') {
-            setFoodImage(foodImage => ({
-                ...foodImage,
-                file: value,
-                imagePreview: URL.createObjectURL(value)
-            }))
-        }
-        else {
-            setFood(food => ({
-                ...food, 
-                [property]: value
-            }))
-        }
-    }
-
-    const displayImage = () => {
-        if (foodImage?.imagePreview) {
-            return foodImage.imagePreview
-        }
-        else if (props.updatedFood?.imageFileName) {
-            return 'http://localhost:3001/' + props.updatedFood.imageFileName
-        }
-        else {
-            return '/images/default.png'
-        }
-    }
-
-    const FoodInput = (props) => {
-        let selectOptions
-        if (props.controlType === 'select') {
-            selectOptions = props.label === 'Unit' ? unitOptions : foodGroupOptions 
-        }
-
-        return (
-            <Form.Group className='mb-3'>
-                <Form.Label className='food-label'>{props.label}</Form.Label>
-                <Form.Control 
-                    name={props.name}
-                    type={props.textType} 
-                    as={props.controlType}
-                    onChange={props.onValueChange}  
-                    placeholder={props.placeholder}>
-                        {
-                            selectOptions && 
-                            <>
-                                <option>Select a {props.label}</option>
-                                {
-                                    selectOptions.map(option => {
-                                        return <option value={option.value} key={option.key}>{option.text}</option>
-                                    })
-                                }
-                            </>
-                          
-                        }
-                </Form.Control>
-            </Form.Group>
-        )
-    }
-
     return (
-        <Form>
-            <Form.Group className='food-input'>
+        <Form onSubmit={() => props.handleOnSubmit(food)}>
+            <Row>
                 <FoodInput
                     name='name'
                     label='Name'
                     controlType='input'
+                    textType='text'
                     placeholder='Food name'
-                    onValueChange={e => handleChange('name', e.target.value)}
+                    value={props.updatedFood?.name || food.name}
+                    onChange={e => handleChange(e.target.name, e.target.value)} // dry this
                 />
-                 <FoodInput
+            </Row>
+            <Row>
+                <FoodInput
                     name='description'
                     label='Description'
                     controlType='textarea'
+                    textType='text'
                     placeholder='Add notes about this ingredient'
-                    onValueChange={e => handleChange('description', e.target.value)}
+                    value={props.updatedFood?.description || food.description}
+                    onChange={e => handleChange(e.target.name, e.target.value)}
                 />
+            </Row>
+            <Row>
                 <FoodInput 
                     name='quantity'
                     label='Quantity' 
                     controlType='input' 
                     textType='number' 
-                    onValueChange={e => handleChange('quantity', e.target.value)}
+                    value={props.updatedFood?.quantity || food.quantity}
+                    onChange={e => handleChange(e.target.name, e.target.value)}
                 />
                 <FoodInput name='unit'
-                           label='Unit'
-                           controlType='select'  
-                           onValueChange={e => onSelectChange(e)}
+                            label='Unit'
+                            controlType='select'  
+                            value={props.updatedFood?.unit || food.unit}
+                            onChange={e => handleChange(e.target.name, e.target.value)}
+
                 />
                 <FoodInput name ='foodGroup'
-                           label='Food Group' 
-                           controlType='select' 
-                           name='foodGroup'
-                           onValueChange={e => onSelectChange(e)}
-                           value={props.updatedFood?.foodGroup || food.foodGroup} 
+                            label='Food Group' 
+                            controlType='select' 
+                            value={props.updatedFood?.foodGroup || food.foodGroup} 
+                            onChange={e => handleChange(e.target.name, e.target.value)}
+
                 />
                 <FoodInput name='calories' 
-                           label='Calories' 
-                           controlType='input' 
-                           textType='number' 
-                           onValueChange={e => handleChange('calories', e.target.value)}
+                            label='Calories' 
+                            controlType='input' 
+                            textType='number' 
+                            value={props.updatedFood?.foodGroup || food.calories}
+                            onChange={e => handleChange(e.target.name, e.target.value)}
                 /> 
-            </Form.Group>
-            <Button className='food-form__btn--submit' color='blue' type='submit'>Submit</Button>
+            </Row>
+            <Button className='food-form__btn--submit' variant='primary' type='submit'>Submit</Button>
             <Link to='/fridge'>
-                <Button color='red'>Cancel</Button>
+                <Button variant='warning'>Cancel</Button>
             </Link>
         </Form>
-    );
-
+    )
 }
 export default FoodForm
