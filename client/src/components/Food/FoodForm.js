@@ -5,10 +5,10 @@ import FoodInput from './FoodInput.js'
 
 const FoodForm = (props) => {
 
-    const [food, setFood] = useState( props.op === 'update' ? props.updatedFood :
+    const [food, setFood] = useState( props.updatedFood ??
        { name: '', 
         description: '',
-        quantity: 0, 
+        quantity: null, 
         unit: '', 
         foodGroup: null, 
         calories:  null, 
@@ -41,7 +41,8 @@ const FoodForm = (props) => {
                     controlType='textarea'
                     textType='text'
                     placeholder='Add notes about this ingredient'
-                    value={props.updatedFood?.description || food.description}
+                    value={food.description}
+                    defaultValue={props.updatedFood?.description}
                     onChange={e => handleChange(e.target.name, e.target.value)}
                 />
             </Row>
@@ -72,7 +73,7 @@ const FoodForm = (props) => {
                             label='Calories' 
                             controlType='input' 
                             textType='number' 
-                            value={props.updatedFood?.foodGroup || food.calories}
+                            value={props.updatedFood?.calories || food.calories}
                             onChange={e => handleChange(e.target.name, e.target.value)}
                 /> 
             </Row>

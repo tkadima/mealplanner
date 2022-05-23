@@ -32,7 +32,8 @@
                 as={props.controlType}
                 onChange={props.onChange}  
                 placeholder={props.placeholder}
-                value={props.value}>
+                value={props.value}
+                defaultValue={props.defaultValue}>
                     {
                         selectOptions && 
                         <>
