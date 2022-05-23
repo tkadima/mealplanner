@@ -24,9 +24,10 @@ router.post('/food', (req, res) => {
         description: req.body.description, 
         quantity: req.body.quantity, 
         unit: req.body.unit,
-        foodGroup: req.body.group, 
+        foodGroup: req.body.foodGroup, 
         calories: req.body.calories,
     })
+    
     Food.create(food)
         .then(f => res.json(food))
         .catch(err => res.status(400).json({ error: 'Unable to add this food' }));
