@@ -40,16 +40,12 @@ const EditFood = (props) => {
 
         axios.put('http://localhost:3001/api/food/' + id, formData, config)
         .then(res => {
-            console.log('res data', res.data)
-
             var updated = props.foodList.map(food => {
                 if(food._id === id) return res.data
                 else return food
             })
             props.setFoodList(updated)
-        })
-        .then(res => {
-            history.push('/fridge')
+            history.goBack()
         })
         .catch(error => {
             console.log(error)

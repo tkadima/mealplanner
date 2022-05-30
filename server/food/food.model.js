@@ -16,14 +16,19 @@ const FoodSchema = new mongoose.Schema({
         type: Number, 
         min: 0
     },
-    foodImage: {
-        filename: String, 
-        img: 
-        {
-            data: Buffer,
-            contentType: String
-        } 
-        
+    nutrition: {
+        totalFat: Number, 
+        saturatedFat: Number, 
+        transFat: Number, 
+        cholesterol: Number, 
+        totalCarb: Number, 
+        dietaryFiber: Number,
+        sugar: Number, 
+        protein: Number,
+        vitaminD: Number, 
+        calcium: Number, 
+        iron: Number, 
+        potassium: Number   
     }
 })
 
