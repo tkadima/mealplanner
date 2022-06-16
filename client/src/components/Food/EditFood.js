@@ -45,7 +45,6 @@ const EditFood = (props) => {
                 else return food
             })
             props.setFoodList(updated)
-            history.goBack()
         })
         .catch(error => {
             console.log(error)
@@ -56,7 +55,7 @@ const EditFood = (props) => {
             <h1>
                 Edit Food
             </h1>
-            <FoodForm updatedFood={food} handleOnSubmit={handleOnSubmit}/>
+            <FoodForm updatedFood={food} handleOnSubmit={handleOnSubmit} handleAfterSubmit={() => history.push('/fridge')}/>
         </div>
     )
 

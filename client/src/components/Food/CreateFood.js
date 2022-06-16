@@ -21,7 +21,6 @@ const CreateFood = (props) => {
         .then(response => {
             console.log('response data', response.data)
             props.setFoodList([...props.foodList, response.data])
-            history.goBack()
         })
         .catch(error => {
             console.log(error)
@@ -33,7 +32,7 @@ const CreateFood = (props) => {
              <h1>
                 Add New Food for Fridge
              </h1>
-            <FoodForm  op='create' handleOnSubmit={handleOnSubmit} />
+            <FoodForm  op='create' handleOnSubmit={handleOnSubmit} handleAfterSubmit={() => history.push('/fridge')}/>
         </div> 
     )
 }

@@ -22,7 +22,7 @@ const FoodForm = (props) => {
     }
 
     return (
-        <Form onSubmit={() => props.handleOnSubmit(food)}>
+        <Form onSubmit={() => props.handleOnSubmit(food)} afterSubmit={props.handleAfterSubmit}>
             <Row>
                 <FoodInput
                     name='name'

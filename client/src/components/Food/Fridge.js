@@ -5,7 +5,7 @@ import { Button, Container, Row } from 'react-bootstrap'
 import axios from 'axios';
 
 import '../App.scss'
-import Food from './Food'
+import ItemCard from '../../ItemCard';
 
 const Fridge = (props) => {
   const handleOnDelete = (id) => {
@@ -53,13 +53,13 @@ const Fridge = (props) => {
         <Row>
         {
           props.foodList.map((item, i) => { 
-              return <Food 
+              return <ItemCard 
                 key={i} 
-                foodId={item._id}
+                itemId={item._id}
                 name={item.name}
-                foodGroup={item.foodGroup}
                 description={item.description} 
                 onDelete={handleOnDelete}
+                link={`/fridge/update/${item._id}`}
               />
           })
         }
