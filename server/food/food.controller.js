@@ -1,6 +1,5 @@
 const model = require('../models')
 const Food = model.Food
-const Op = model.Sequelize.Op
 
 exports.create = (req, res) => {
     let food = { 

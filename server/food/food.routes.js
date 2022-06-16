@@ -1,6 +1,4 @@
 const express = require('express')
-var fs = require('fs');
-
 const router = express()
 
 let Food = require('./food.model')
