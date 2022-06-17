@@ -10,25 +10,36 @@ import Fridge from './Food/Fridge';
 import CreateFood from './Food/CreateFood'
 import EditFood from './Food/EditFood'
 import RecipeBook from './Recipes/RecipeBook'
+import CreateRecipe from './Recipes/CreateRecipe';
+import EditRecipe from './Recipes/EditRecipe';
+
 import './App.scss'
 
  const App = () => {
 
-  const [data, setData] = useState([])
+  const [food, setFood] = useState([])
+  const [recipes, setRecipes] = useState([])
 
+  // TODO: reduce the amount of fetches to the database - redux 
   const getAllFood = () => {
     axios.get('http://localhost:3001/api/food')
     .then(response => {
       const foodList = response.data
-      setData(foodList)
+      setFood(foodList)
     })
-    // todo why is foodlist empty in the newest EditFood component 
-    // but not in other places?
+  }
 
+  const getAllRecipes = () => {
+    axios.get('https://localhost:3001/api/recipes')
+    .then(response => {
+      const recipeList = response.data 
+      setRecipes(recipeList)
+    })
   }
 
   useEffect(() => {
     getAllFood()
+    getAllRecipes()
   }, [])
 
   return (
@@ -42,16 +53,22 @@ import './App.scss'
               <Planner /> 
             </Route>
             <Route exact path="/fridge">
-              <Fridge foodList={data} setFoodList={setData} />
+              <Fridge foodList={food} setFoodList={setFood} />
             </Route>
             <Route exact path="/fridge/new">
-              <CreateFood foodList={data} setFoodList={setData}/>
+              <CreateFood foodList={food} setFoodList={setFood}/>
             </Route>
             <Route path="/fridge/update/:id" >
-              <EditFood foodList={data} setFoodList={setData} />
+              <EditFood foodList={food} setFoodList={setFood} />
             </Route>
-            <Route path="/recipes">
-              <RecipeBook />
+            <Route exact path="/recipes">
+              <RecipeBook recipeList={recipes} setRecipeList={setRecipes}/>
+            </Route>
+            <Route path="/recipes/new">
+              <CreateRecipe recipeList={recipes} setRecipeList={setRecipes}/>
+            </Route>
+            <Route path="/recipes/update/:id">
+              <EditRecipe recipeList={recipes} setRecipeList={setRecipes}/>
             </Route>
         </Router>
       </div>

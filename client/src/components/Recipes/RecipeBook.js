@@ -1,8 +1,12 @@
 import { Button, Container, Row } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
+import axios from 'axios';
 
+import '../App.scss'
 import ItemCard from '../../ItemCard';
 
-const RecipeBook = () => {
+// TODO maybe create common components for recipebook and fridge 
+const RecipeBook = (props) => {
 
 
     let sampleRecipes = [ 
@@ -16,9 +20,26 @@ const RecipeBook = () => {
 
     const handleOnDelete = () => {}
 
+    const handleDeleteAll = () => {
+        let confirmed = window.confirm(`Are you sure you want to delete all ${props.recipeList.length} items from the fridge?`) 
+        if (confirmed) {
+            axios.delete('http://localhost:3001/api/food')
+            .then(res => {
+              props.setFoodList([])
+            })
+        }
+    }
+
     return (
         <div className="container">
             <h1>Recipe Book</h1>
+            <div className='fridge__button--add'>
+                <Link to='/recipes/new'>
+                    <Button variant='info' className='rounded-circle' >
+                        <i class="fa fa-plus"></i>
+                    </Button>
+                </Link>
+            </div>
             <Container className='p-4'>
                 <Row>
                 {
@@ -37,8 +58,9 @@ const RecipeBook = () => {
                 </Row>
 
             </Container>
-          
-        
+            <div className='fridge__button--clear'>
+                <Button onClick={handleDeleteAll} disabled={props.recipeList.length === 0} color='warning'>Clear Fridge</Button>
+            </div>
         </div>
     )
 }
